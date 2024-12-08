@@ -1,0 +1,1 @@
+web: gunicorn DRD.wsgi:application --log-file -
