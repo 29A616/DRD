@@ -2,5 +2,5 @@
 .venv
 /.venv2/
 .venv2
-*/_pycache_/
-_pycache_
+*/__pycache__/
+__pycache__
