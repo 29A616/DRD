@@ -7,7 +7,6 @@ providers = ['python']
 buildImage = 'ghcr.io/railwayapp/nixpacks:latest'
 
 [phases.setup]
-# Instalación de paquetes del sistema necesarios
 aptPkgs = [
   'libgl1-mesa-glx',
   'libglib2.0-0',
@@ -15,21 +14,20 @@ aptPkgs = [
 ]
 
 [phases.install]
-# Configuración de Python e instalación de dependencias
 cmds = [
-  "/usr/local/bin/python -m ensurepip --upgrade",               # Asegurarse de que pip esté disponible
-  "/usr/local/bin/python -m venv /app/.venv",                  # Crear el entorno virtual en /app
-  "/app/.venv/bin/pip install --upgrade pip setuptools wheel", # Actualizar herramientas esenciales
-  "/app/.venv/bin/pip install tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow" # Instalar dependencias
+  "/usr/local/bin/python -m ensurepip --upgrade",
+  "/usr/local/bin/python -m venv /app/.venv",
+  "/app/.venv/bin/pip install --upgrade pip setuptools wheel",
+  "/app/.venv/bin/pip install tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow"
 ]
 
 [phases.build]
-# No se requieren comandos adicionales para construir la aplicación
 cmds = ["echo 'Build complete'"]
 
 [start]
-# Validar que Gunicorn se ejecute correctamente
-cmd = "ls -la /app/.venv/bin && /app/.venv/bin/python -m gunicorn DRD.wsgi:application --bind 0.0.0.0:$PORT"
-
-# Imagen ligera para ejecución
-runImage = 'python:3.12-slim'
+cmd = """
+ls -la /app/.venv && ls -la /app/.venv/bin && \
+echo "Testing Python version:" && /app/.venv/bin/python --version && \
+echo "Testing Gunicorn version:" && /app/.venv/bin/gunicorn --version && \
+/app/.venv/bin/python -m gunicorn DRD.wsgi:application --bind 0.0.0.0:$PORT
+"""
