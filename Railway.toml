@@ -1,17 +1,19 @@
 [build]
-# Usa Nixpacks para preparar el entorno y asegurarte de instalar dependencias del sistema
+# Usa Nixpacks como el builder para instalar dependencias del sistema y preparar el entorno
+builder = "Nixpacks"
+
+# Comando personalizado para preparar el entorno
 cmd = """
 apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+    && python -m venv .venv \
+    && . .venv/bin/activate \
+    && pip install --upgrade pip setuptools wheel
 """
 
 [start]
 # Crear un entorno virtual, instalar dependencias y ejecutar la aplicación
 cmd = """
 python -m venv .venv && . .venv/bin/activate \
-    && pip install --no-cache-dir django gunicorn tensorflow matplotlib opencv-python pillow \
+    && pip install --no-cache-dir django gunicorn tensorflow-cpu matplotlib opencv-python-headless pillow \
     && gunicorn DRD.wsgi:application --bind 0.0.0.0:$PORT
 """
