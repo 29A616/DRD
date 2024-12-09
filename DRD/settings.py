@@ -23,11 +23,12 @@ SECRET_KEY = os.getenv(
     'SECRET_KEY', 'django-insecure-$u2@*7wjwt6r@w@f(cqt7*&km!v9$j#y6zf-nyqpxz&8f%%l^e')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+#DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', 'railway.app', '127.0.0.1', '0.0.0.0']
 
-CSFR_TRUSTED_ORIGINS = ['https://drd-production.up.railway.app/', 'https://railway.app/' ]
+CSFR_TRUSTED_ORIGINS = ['https://drd-production.up.railway.app/', 'https://railway.app/', 'https://localhost/', 'https://127.0.0.1/', 'https://0.0.0.0/']
 
 # Application definition
 
