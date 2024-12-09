@@ -21,7 +21,7 @@ RUN python -m venv /app/.venv
 RUN /app/.venv/bin/pip install --upgrade pip setuptools wheel
 
 # Instala dependencias de Python en el entorno virtual
-RUN /app/.venv/bin/pip install tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow
+RUN /app/.venv/bin/pip install tensorflow gunicorn django opencv-python-headless matplotlib pillow
 
 # Comando para verificar la estructura del entorno virtual
 RUN echo "Verificando /app/.venv:" && ls -la /app/.venv && \
