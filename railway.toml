@@ -1,0 +1,30 @@
+[build]
+# Usa Nixpacks como builder
+builder = "Nixpacks"
+
+# Configuración de Nixpacks para instalar dependencias del sistema y Python
+[build.nixpacks]
+# Especifica que se usará Python
+languages = ["python"]
+
+# Paquetes adicionales del sistema necesarios para OpenCV
+packages = [
+    "libgl1-mesa-glx",  # Necesaria para OpenCV
+    "libglib2.0-0",     # Dependencia de OpenCV
+    "gcc"               # Para compilar extensiones nativas
+]
+
+# Comando para crear un entorno virtual y preparar Python
+cmd = """
+python -m venv .venv && . .venv/bin/activate \
+    && pip install --upgrade pip setuptools wheel
+"""
+
+[start]
+# Crear entorno virtual, instalar dependencias manualmente y ejecutar la aplicación
+cmd = """
+. .venv/bin/activate \
+    && pip install --no-cache-dir tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow \
+    && gunicorn DRD.wsgi:application --bind 0.0.0.0:$PORT
+"""
+
