@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1', '0.0.0.0']
 
-CSFR_TRUSTED_ORIGINS = [os.getenv('RAILWAY_PUBLIC_DOMAIN', 'https://.railway.app'), os.getenv('RAILWAY_RIVATE_DOMAIN', 'https://.railway.app') ,'https://drd-production.up.railway.app', 'https://.up.railway.app', 'https://.railway.app', 'https://localhost', 'https://127.0.0.1', 'https://0.0.0.0']
+CSFR_TRUSTED_ORIGINS = [os.getenv('RAILWAY_PUBLIC_DOMAIN', 'https://.railway.app'), os.getenv('RAILWAY_PRIVATE_DOMAIN', 'https://.railway.app') ,'https://drd-production.up.railway.app', 'https://.up.railway.app', 'https://.railway.app', 'https://localhost', 'https://127.0.0.1', 'https://0.0.0.0']
 
 # Application definition
 
