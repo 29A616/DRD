@@ -28,7 +28,7 @@ cmds = ["echo 'Build complete'"]
 
 [start]
 # Comando para iniciar la aplicación desde el entorno virtual
-cmd = "/app/.venv/bin/gunicorn DRD.wsgi:application --bind 0.0.0.0:$PORT"
+cmd = ". .venv/bin/activate && /app/.venv/bin/gunicorn DRD.wsgi:application --bind 0.0.0.0:$PORT"
 
 # Especificar una imagen de runtime ligera
 runImage = 'python:3.12-slim'
