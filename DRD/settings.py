@@ -23,16 +23,25 @@ SECRET_KEY = os.getenv(
     'SECRET_KEY', 'django-insecure-$u2@*7wjwt6r@w@f(cqt7*&km!v9$j#y6zf-nyqpxz&8f%%l^e')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = os.getenv('DEBUG', 'False') == 'True'
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [os.getenv('RAILWAY_PUBLIC_DOMAIN', 'https://.railway.app'), os.getenv('RAILWAY_PRIVATE_DOMAIN', 'https://.railway.app'), '.railway.app', 'localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = [os.getenv('RAILWAY_PUBLIC_DOMAIN', '.railway.app'), os.getenv('RAILWAY_PRIVATE_DOMAIN', '.railway.app'), '.railway.app', 'localhost', '127.0.0.1', '0.0.0.0']
 
-CSFR_TRUSTED_ORIGINS = [os.getenv('RAILWAY_PUBLIC_DOMAIN', 'https://.railway.app'), os.getenv('RAILWAY_PRIVATE_DOMAIN', 'https://.railway.app') ,'https://drd-production.up.railway.app', 'https://.up.railway.app', 'https://.railway.app', 'https://localhost', 'https://127.0.0.1', 'https://0.0.0.0']
+CSFR_TRUSTED_ORIGINS = ['*', 'https://*', 'http://*']
+#CSFR_TRUSTED_ORIGINS = ["".join(['https://', os.getenv('RAILWAY_PUBLIC_DOMAIN','https://.railway.app')]),
+#                        "".join(['https://', os.getenv('RAILWAY_PRIVATE_DOMAIN', 'https://.railway.app')]),
+#                        'https://drd-production.up.railway.app',
+#                        'https://.up.railway.app',
+#                        'https://.railway.app',
+#                        'http://localhost',
+#                        'http://127.0.0.1',
+#                        'http://0.0.0.0',
+#                        ]
 
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+#SECURE_SSL_REDIRECT = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
 
 SESSION_COOKIE_AGE = 300
 SESSION_SAVE_EVERY_REQUEST = True
