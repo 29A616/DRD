@@ -1,38 +1,34 @@
 # Configuración de Nixpacks para el entorno de Python
 
-# Paquetes de Python necesarios
+# Proveedor principal: Python
 providers = ['python']
 
 # Imagen base para construir
 buildImage = 'ghcr.io/railwayapp/nixpacks:latest'
 
-#[phases.setup]
+[phases.setup]
 # Instalación de paquetes del sistema necesarios para OpenCV y Python
-#aptPkgs = [
-#  'libgl1-mesa-glx',     # Necesaria para OpenCV
-#  'libglib2.0-0',        # Dependencia requerida por OpenCV
-#  'gcc'                  # Para compilar extensiones nativas de Python
-#]
-
-# Paquetes de Nix adicionales si los necesitas
-nixPkgs = ['zlib']
+aptPkgs = [
+  'libgl1-mesa-glx',     # Necesaria para OpenCV
+  'libglib2.0-0',        # Dependencia requerida por OpenCV
+  'gcc'                  # Para compilar extensiones nativas de Python
+]
 
 [phases.install]
-# Instalación de dependencias de Python en un entorno virtual
+# Comandos para configurar Python e instalar dependencias
 cmds = [
-  "python -m venv .venv",                                # Crear un entorno virtual
-  ". .venv/bin/activate",                                # Activar el entorno virtual
-  "pip install --upgrade pip setuptools wheel",          # Actualizar herramientas esenciales de Python
-  "pip install tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow"
+  "python -m venv .venv",                                # Crear el entorno virtual
+  ". .venv/bin/activate && pip install --upgrade pip setuptools wheel", # Actualizar herramientas esenciales
+  ". .venv/bin/activate && pip install tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow" # Instalar dependencias de Python
 ]
 
 [phases.build]
-# Comandos para construir la aplicación (si aplica)
+# No se requieren comandos adicionales para construir la aplicación
 cmds = ["echo 'Build complete'"]
 
 [start]
-# Comando para iniciar la aplicación
-cmd = ". .venv/bin/activate && gunicorn DRD.wsgi:application --bind 0.0.0.0:$PORT"
+# Comando para iniciar la aplicación desde el entorno virtual
+cmd = "/app/.venv/bin/gunicorn DRD.wsgi:application --bind 0.0.0.0:$PORT"
 
-# Especificar la imagen de runtime si es necesario
+# Especificar una imagen de runtime ligera
 runImage = 'python:3.12-slim'
