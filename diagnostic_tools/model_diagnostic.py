@@ -26,7 +26,7 @@ def generate_gradcam(image_path, output_path, last_conv_layer_name=None):
 
         img = keras.utils.load_img(
             image_path, target_size=(IMG_WIDTH, IMG_HEIGHT))
-        img_array = keras.preprocessing.img_to_array(img) / 255.0
+        img_array = keras.utils.img_to_array(img) / 255.0
         img_array = np.expand_dims(img_array, axis=0)
 
         if not last_conv_layer_name:
@@ -79,7 +79,7 @@ def make_prediction(image_path):
 
         image = Image.open(image_path)
         image = image.resize((IMG_WIDTH, IMG_HEIGHT))
-        img_array = keras.preprocessing.img_to_array(image)
+        img_array = keras.utils.img_to_array(image)
         img_array = np.expand_dims(img_array, axis=0)
         img_array = img_array / 255.0
 
