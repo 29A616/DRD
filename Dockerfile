@@ -15,8 +15,7 @@ RUN apt-get update && apt-get install -y \
     && pip install --upgrade pip setuptools wheel
 
 # Instala dependencias de Python directamente
-RUN python -m venv .venv && . .venv/bin/activate \
-&& pip install --no-cache-dir django gunicorn tensorflow-cpu matplotlib opencv-python-headless pillow \
+RUN  pip install --no-cache-dir django gunicorn tensorflow-cpu matplotlib opencv-python-headless pillow \
 && gunicorn DRD.wsgi:application --bind 0.0.0.0:$PORT
 
 # Copia todos los archivos del proyecto al contenedor
