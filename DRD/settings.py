@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['drd-production.up.railway.app', 'localhost', 'railway.app', '127.0.0.1', '0.0.0.0']
 
-CSFR_TRUSTED_ORIGINS = ['https://drd-production.up.railway.app/', 'https://railway.app/', 'https://localhost/', 'https://127.0.0.1/', 'https://0.0.0.0/']
+CSFR_TRUSTED_ORIGINS = ['https://drd-production.up.railway.app', 'https://railway.app', 'https://localhost', 'https://127.0.0.1', 'https://0.0.0.0']
 
 # Application definition
 
