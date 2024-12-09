@@ -27,6 +27,8 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
+CSFR_TRUSTED_ORIGINS = ['https://drd-production.up.railway.app/', 'https://railway.app/' ]
+
 # Application definition
 
 INSTALLED_APPS = [
