@@ -1,0 +1,7 @@
+[build]
+# Comando para preparar el entorno
+builder = "Nixpacks"
+
+[start]
+# Comando para instalar dependencias y ejecutar el servidor
+cmd = "pip install --no-cache-dir django gunicorn tensorflow matplotlib opencv-python pillow && gunicorn DRD.wsgi:application --bind 0.0.0.0:8000"

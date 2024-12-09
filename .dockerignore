@@ -1,0 +1,16 @@
+*.pyc
+*.pyo
+*.log
+__pycache__
+.env
+/static
+/media
+.env2
+.env3
+/.env/
+/static
+/media
+/.env2/
+/.env3/
+runtime.txt
+.gitignore
