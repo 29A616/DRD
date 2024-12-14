@@ -25,13 +25,21 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
-#ALLOWED_HOSTS = [os.getenv('RAILWAY_PUBLIC_DOMAIN', '.railway.app'), os.getenv('RAILWAY_PRIVATE_DOMAIN', '.railway.app'), '.railway.app', 'localhost', '127.0.0.1', '0.0.0.0']
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    os.getenv('RAILWAY_PUBLIC_DOMAIN', '*.railway.app'),
+    os.getenv('RAILWAY_PRIVATE_DOMAIN', '*.railway.app'),
+    '*.railway.app',
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0'
+]
 
-CSFR_TRUSTED_ORIGINS = ['*', 'https://*', 'http://*']
-#CSFR_TRUSTED_ORIGINS = [os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localhost'),]
+# CSFR_TRUSTED_ORIGINS = ['*', 'https://*', 'http://*']
+CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localhost'),
+                        "http://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localhost')]
 
-#CSFR_TRUSTED_ORIGINS = ["".join(['https://', os.getenv('RAILWAY_PUBLIC_DOMAIN','https://.railway.app')]),
+# CSFR_TRUSTED_ORIGINS = ["".join(['https://', os.getenv('RAILWAY_PUBLIC_DOMAIN','https://.railway.app')]),
 #                        "".join(['https://', os.getenv('RAILWAY_PRIVATE_DOMAIN', 'https://.railway.app')]),
 #                        'https://drd-production.up.railway.app',
 #                        'https://.up.railway.app',
@@ -41,11 +49,12 @@ CSFR_TRUSTED_ORIGINS = ['*', 'https://*', 'http://*']
 #                        'http://0.0.0.0',
 #                        ]
 
-CSFR_COOKIE_DOMAIN = os.getenv('RAILWAY_PUBLIC_DOMAIN', 'https://drd-production.up.railway.app')
+CSRF_COOKIE_DOMAIN = os.getenv(
+    'RAILWAY_PUBLIC_DOMAIN', 'https://drd-production.up.railway.app')
 
-#SECURE_SSL_REDIRECT = True
-#SESSION_COOKIE_SECURE = True
-#CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
 SESSION_COOKIE_AGE = 300
 SESSION_SAVE_EVERY_REQUEST = True
