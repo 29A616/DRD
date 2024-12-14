@@ -21,7 +21,9 @@ CLASS_MAPPING = {
     4: "Retinopatía diabética proliferativa"
 }
 
-@csrf_exempt
+# @csrf_exempt
+
+
 def signin(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -33,7 +35,9 @@ def signin(request):
         form = UserCreationForm()
     return render(request, 'webserver/signin.html', {'form': form})
 
-@csrf_exempt
+# @csrf_exempt
+
+
 def user_login(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -58,7 +62,9 @@ def user_logout(request):
 def index(request):
     return render(request, 'webserver/index.html')
 
-@csrf_exempt
+# @csrf_exempt
+
+
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -74,7 +80,9 @@ def profile(request):
         form = UserProfileForm(instance=request.user)
     return render(request, 'webserver/profile.html', {'form': form})
 
-@csrf_exempt
+# @csrf_exempt
+
+
 @login_required
 def diagnostic(request):
     patient_form = PatientForm()
