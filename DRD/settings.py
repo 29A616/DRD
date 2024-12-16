@@ -109,7 +109,7 @@ WSGI_APPLICATION = 'DRD.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if os.getenv('RAILWAY_ENVIRONMENT_NAME') == 'production':
+if os.getenv('ENVIROMENT', None) == 'production':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
