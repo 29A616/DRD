@@ -1,0 +1,8 @@
+/.venv/
+.venv
+/.venv2/
+.venv2
+*/__pycache__/
+__pycache__
+.ino
+*.ino

@@ -1,0 +1,372 @@
+/* =========== Google Fonts ============ */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+
+*, body{
+    font-family: "Ubuntu", sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* COLORES */
+
+:root {
+    /* --blue: #2a2185; */
+    --blue: #291d21;
+    --white: #fff;
+    --gray: #f5f5f5;
+    --black1: #222;
+    --black2: #999;
+    --brown2: #5d544d;
+    --beige: #e1daca;
+    --rose: #cb6f84;
+  }
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* TOP */
+
+nav .top-bar {
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+nav .top-bar button{
+    display: flex;
+    background: none;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 16px;
+    width: 40px;
+    height:100%;
+}
+
+nav .top-bar a{
+    color: var(--white);
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+  /* MENU */
+
+  .navigation {
+    position: fixed;
+    width: 300px;
+    height: 100%;
+    background: var(--blue);
+    border-left: 10px solid var(--blue);
+    transition: 0.5s;
+    overflow: hidden;
+  }
+  .navigation.active {
+    width: 80px;
+  }
+
+  .navigation ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 60px 0px;
+  }
+  
+  .navigation ul li {
+    position: relative;
+    width: 100%;
+    list-style: none;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+  }
+
+  .navigation ul li:hover,
+.navigation ul li.hovered {
+  background-color: var(--beige);
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--white);
+}
+
+.navigation ul li:hover a,
+.navigation ul li.hovered a {
+  color: var(--blue);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 60px;
+  height: 60px;
+  line-height: 75px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  text-align: start;
+  white-space: nowrap;
+}
+
+/* --------- Efecto Curvado---------- */
+.navigation ul li:hover a::before,
+.navigation ul li.hovered a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px var(--beige);
+  pointer-events: none;
+}
+.navigation ul li:hover a::after,
+.navigation ul li.hovered a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px var(--beige);
+  pointer-events: none;
+}
+
+/* ===================== Main ===================== */
+
+main{
+    position: absolute;
+    width: calc(100% - 300px);
+    left: 300px;
+    height: calc(100vh - 40px);
+    background: var(--beige);
+    transition: 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  main .active {
+    width: calc(100% - 80px);
+    left: 80px;
+  }
+
+  /* ===================== Diagnostic ===================== */
+
+  main .mt-5{
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+  }
+
+  .mt-5 h1{
+    font-weight: 600;
+    color: var(--blue);
+    font-size: 2em;
+    margin-bottom: 0px;
+  }
+
+  main .everything{
+    width: 100%;
+    padding: 40px 10px; 
+  }
+
+  .everything nav{
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .everything a{
+    text-decoration: none;
+    color: var(--black);
+  }
+
+  .everything .content-list{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .everything .content-ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+  }
+
+  .everything nav ul{
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+  }
+
+  .everything nav ul li a:hover{
+    color: var( --brown2); 
+    box-sizing: content-box;
+  }
+ 
+  main .cards{
+    padding: 20px;
+    background: var(--white);
+    border-radius: 20px;
+    background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
+    box-shadow:  14px 14px 28px #b6b1a4,
+             -14px -14px 28px #fffff0;
+  }
+
+  .cards .card-title{
+    font-size: 1.2em;
+  }
+
+  /* FORMULARIO */
+
+  .cards form{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .cards form p{
+    margin: 1em 0px 1em 0px;
+    position: relative;
+  }
+  
+  .cards form p input {
+    font-size: 100%;
+    padding: 0.8em;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    border-radius: 20px;
+    width: 100%;
+  }
+
+  .cards form p textarea{
+    font-size: 100%;
+    padding: 0.8em;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    border-radius: 20px;
+    width: 600px;
+    resize: none;
+  
+  }
+  
+  .cards form p label {
+    font-size: 100%;
+    position: absolute;
+    left: 0;
+    padding: 0.8em;
+    margin-left: 0.5em;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: rgb(100, 100, 100);
+  }
+  
+  .cards form p :is(input:focus, input:valid) ~ label, .cards form p :is(textarea:focus) ~ label {
+    transform: translateY(-50%) scale(.9);
+    margin: 0em;
+    margin-left: 1.3em;
+    padding: 0.4em;
+    background:  var(--rose);
+    color: var(--white);
+    border-radius: 10px;
+  }
+  
+  .cards form p :is(input:focus, input:valid) {
+    border-color: var(--rose);
+  }
+
+  .cards form button {
+    width: 160px;
+    height: 3em;
+    border-radius: 30em;
+    font-size: 16px;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
+    box-shadow:  14px 14px 28px #b6b1a4,
+             -14px -14px 28px #fffff0;
+    color: rgb(100, 100, 100);
+   }
+   
+   .cards form button::before {
+    content: '';
+    width: 0;
+    height: 3em;
+    border-radius: 30em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(90deg, rgba(203,111,132,1) 26%, rgba(230,79,113,1) 53%);
+    transition: .5s ease;
+    display: block;
+    z-index: -1;
+   }
+   
+   .cards form button:hover::before {
+    width: 160px;
+   }
+   .cards form button:hover{
+    color: var(--white);
+   }
+
+/* SELECT */
+
+.cards form select{
+  font-size: 100%;
+  padding: 0.8em;
+  outline: none;
+  border: 2px solid rgb(200, 200, 200);
+  background-color: transparent;
+  border-radius: 20px;
+  width: 100%;
+}
+
+/* IMAGE */
+
+input#id_image {
+  width: 600px;
+}
+
+/* RESULT */
+
+.cards .content-result{
+  width: 100%;
+  padding: 30px 0px;
+}
+
