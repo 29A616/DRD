@@ -27,4 +27,4 @@ RUN /app/.venv/bin/python /app/.venv/bin/pip install --no-cache-dir tensorflow-c
 EXPOSE 8000
 
 # Comando de inicio del contenedor
-CMD ["/app/.venv/bin/python", "/app/manage.py", "&&", "/app/.venv/bin/python", "/app/manage.py", "migrate", "&&", "/app/.venv/bin/python", "-m", "gunicorn", "DRD.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["/bin/sh", "-c", "/app/.venv/bin/python /app/manage.py makemigrations && /app/.venv/bin/python /app/manage.py migrate && /app/.venv/bin/python -m gunicorn DRD.wsgi:application --bind 0.0.0.0:8000"]
