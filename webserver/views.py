@@ -1,16 +1,15 @@
 # from django.utils.timezone import datetime  # Para manejo de fechas
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import UserProfileForm
-from .forms import PatientForm, DiagnosticImageForm
+from .forms import UserProfileForm, PatientForm, DiagnosticImageForm
 from .models import Patient, DiagnosticImage
 from diagnostic_tools.model_diagnostic import make_prediction, generate_gradcam
 import os
 from datetime import date
-from django.views.decorators.csrf import csrf_exempt
 
 
 CLASS_MAPPING = {
@@ -20,8 +19,6 @@ CLASS_MAPPING = {
     3: "Retinopatía diabética severa",
     4: "Retinopatía diabética proliferativa"
 }
-
-# @csrf_exempt
 
 
 def signin(request):
@@ -34,8 +31,6 @@ def signin(request):
     else:
         form = UserCreationForm()
     return render(request, 'webserver/signin.html', {'form': form})
-
-# @csrf_exempt
 
 
 def user_login(request):
@@ -62,8 +57,6 @@ def user_logout(request):
 def index(request):
     return render(request, 'webserver/index.html')
 
-# @csrf_exempt
-
 
 @login_required
 def profile(request):
@@ -80,8 +73,6 @@ def profile(request):
         form = UserProfileForm(instance=request.user)
     return render(request, 'webserver/profile.html', {'form': form})
 
-# @csrf_exempt
-
 
 @login_required
 def diagnostic(request):
@@ -90,6 +81,7 @@ def diagnostic(request):
     patients = Patient.objects.filter(user=request.user).order_by('-id')
     diagnostics = None
     prediction_result = None
+    selected_patient = None
 
     if request.method == 'POST':
         # Manejar registro de pacientes
@@ -101,6 +93,27 @@ def diagnostic(request):
                 patient.save()
                 messages.success(request, 'Paciente registrado exitosamente.')
                 return redirect('/diagnostic/?tab=diagnostic-card')
+
+        # Manejar edición de pacientes
+        if 'update_patient' in request.POST:
+            patient_id = request.POST.get('patient_id')
+            patient = get_object_or_404(
+                Patient, id=patient_id, user=request.user)
+            patient_form = PatientForm(request.POST, instance=patient)
+            if patient_form.is_valid():
+                patient_form.save()
+                messages.success(
+                    request, 'Datos del paciente actualizados exitosamente.')
+                return redirect('/diagnostic/?tab=diagnostic-card')
+
+        # Manejar eliminación de pacientes
+        if 'delete_patient' in request.POST:
+            patient_id = request.POST.get('patient_id')
+            patient = get_object_or_404(
+                Patient, id=patient_id, user=request.user)
+            patient.delete()
+            messages.success(request, 'Paciente eliminado exitosamente.')
+            return redirect('/diagnostic/?tab=diagnostic-card')
 
         # Manejar carga de imágenes
         if 'upload_image' in request.POST:
@@ -132,12 +145,28 @@ def diagnostic(request):
 
                 return redirect('/diagnostic/?tab=diagnostic-card')
 
+    elif request.method == 'GET' and 'patient_id' in request.GET:
+        patient_id = request.GET.get('patient_id')
+        selected_patient = get_object_or_404(
+            Patient, id=patient_id, user=request.user)
+        patient_form = PatientForm(instance=selected_patient)
+
+    # Método para filtrar por fecha y nombre de paciente
     if request.method == 'GET':
         date_filter = request.GET.get('date_filter', str(date.today()))
+        patient_name_filter = request.GET.get('patient_name_filter', '')
+
         diagnostics = DiagnosticImage.objects.filter(
-            patient__user=request.user,
-            consultation_date__date=date_filter
-        ).order_by('-consultation_date')
+            patient__user=request.user
+        )
+
+        # Filtrar por fecha si el filtro de fecha fue proporcionado
+        if date_filter:
+            diagnostics = diagnostics.filter(
+                consultation_date__date=date_filter)
+
+        # Ordenar por fecha de consulta en orden descendente
+        diagnostics = diagnostics.order_by('-consultation_date')
 
     return render(request, 'webserver/diagnostic.html', {
         'patient_form': patient_form,
@@ -145,5 +174,6 @@ def diagnostic(request):
         'patients': patients,
         'diagnostics': diagnostics,
         'prediction_result': prediction_result,
+        'selected_patient': selected_patient,
         'today': date.today()
     })

@@ -15,6 +15,7 @@ class Patient(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     age = models.IntegerField()
+    birth_date = models.DateField()
     medical_history = models.TextField()
     contact = models.CharField(max_length=100)
     user = models.ForeignKey(

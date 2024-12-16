@@ -6,3 +6,5 @@
 __pycache__
 .ino
 *.ino
+db.sqlite3
+/media/

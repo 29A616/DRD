@@ -10,9 +10,15 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password']
+        labels = {'username': 'Usuario', 'first_name': 'Nombre', 'last_name': 'Apellido',
+                  'email': 'Correo electrónico', 'password': 'Contraseña'}
         widgets = {
             'username': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['password'].label = 'Nueva Contraseña'
 
     def clean_password(self):
         password = self.cleaned_data.get('password')
@@ -25,7 +31,18 @@ class PatientForm(forms.ModelForm):
     class Meta:
         model = Patient
         fields = ['first_name', 'last_name',
-                  'age', 'medical_history', 'contact']
+                  'age', 'birth_date', 'medical_history', 'contact']
+        labels = {
+            'first_name': 'Nombre',
+            'last_name': 'Apellido',
+            'age': 'Edad',
+            'birth_date': 'Fecha de Nacimiento',
+            'medical_history': 'Historia Médica',
+            'contact': 'Contacto',
+        }
+        widgets = {
+            'birth_date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 
 class DiagnosticImageForm(forms.ModelForm):
