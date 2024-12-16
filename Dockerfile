@@ -23,6 +23,9 @@ RUN /app/.venv/bin/pip install --upgrade pip setuptools wheel
 # Instala dependencias de Python en el entorno virtual
 RUN /app/.venv/bin/pip install tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow whitenoise
 
+# Asignar permisos de ejecución a manage.py
+RUN chmod +x /app/manage.py
+
 # Realiza las migraciones de la base de datos
 RUN /app/manage.py makemigrations && /app/manage.py migrate
 
