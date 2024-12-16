@@ -115,7 +115,7 @@ if os.getenv('ENVIROMENT', None) == 'production':
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.getenv('PGDATABASE'),
             'USER': os.getenv('PGUSER'),
-            'PASSWORD': os.getenv('PGPASSWORD',),
+            'PASSWORD': os.getenv('PGPASSWORD'),
             'HOST': os.getenv('PGHOST'),
             'PORT': os.getenv('PGPORT'),
         }

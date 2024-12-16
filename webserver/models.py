@@ -26,7 +26,8 @@ class Patient(models.Model):
 
 
 class DiagnosticImage(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     patient = models.ForeignKey(
         'Patient', on_delete=models.CASCADE, related_name='diagnostic_images')
     image = models.ImageField(upload_to=diagnostic_images_upload_to)
