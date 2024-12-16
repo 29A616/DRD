@@ -25,7 +25,6 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-# ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = [
     os.getenv('RAILWAY_PUBLIC_DOMAIN', '*.railway.app'),
     os.getenv('RAILWAY_PRIVATE_DOMAIN', '*.railway.app'),
@@ -35,24 +34,14 @@ ALLOWED_HOSTS = [
     '0.0.0.0'
 ]
 
-# CSFR_TRUSTED_ORIGINS = ['*', 'https://*', 'http://*']
 CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localhost'),
                         "http://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localhost')]
-
-# CSFR_TRUSTED_ORIGINS = ["".join(['https://', os.getenv('RAILWAY_PUBLIC_DOMAIN','https://.railway.app')]),
-#                        "".join(['https://', os.getenv('RAILWAY_PRIVATE_DOMAIN', 'https://.railway.app')]),
-#                        'https://drd-production.up.railway.app',
-#                        'https://.up.railway.app',
-#                        'https://.railway.app',
-#                        'http://localhost',
-#                        'http://127.0.0.1',
-#                        'http://0.0.0.0',
-#                        ]
 
 CSRF_COOKIE_DOMAIN = os.getenv(
     'RAILWAY_PUBLIC_DOMAIN', 'https://drd-production.up.railway.app')
 
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/login/'
 
 
 # SECURE_SSL_REDIRECT = True
