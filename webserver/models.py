@@ -26,7 +26,7 @@ class Patient(models.Model):
 
 
 class DiagnosticImage(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     patient = models.ForeignKey(
         'Patient', on_delete=models.CASCADE, related_name='diagnostic_images')
     image = models.ImageField(upload_to=diagnostic_images_upload_to)
@@ -38,13 +38,10 @@ class DiagnosticImage(models.Model):
 
     def save(self, *args, **kwargs):
         creating = self.pk is None
-        # Primero guarda para que image obtenga su nombre final
         super().save(*args, **kwargs)
 
-        # Si es la primera vez que se guarda y aún no hay gradcam, la creamos
         if creating and self.image and not self.gradcam_image:
             base_name = os.path.splitext(os.path.basename(self.image.name))[0]
             gc_name = f"{base_name}-gc.png"
-            # Asigna el nombre sin volver a aplicar upload_to, ya que el archivo gradcam se generará manualmente.
             self.gradcam_image.name = f"diagnostic_images/{gc_name}"
             super().save(*args, **kwargs)
