@@ -21,7 +21,7 @@ RUN python -m venv /app/.venv
 RUN /app/.venv/bin/pip install --upgrade pip setuptools wheel
 
 # Instala dependencias de Python en el entorno virtual
-RUN /app/.venv/bin/python /app/.venv/bin/pip install tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow whitenoise
+RUN /app/.venv/bin/python /app/.venv/bin/pip install --no-cache-dir tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow whitenoise psycopg[binary]
 
 # Realiza las migraciones de la base de datos
 RUN /app/.venv/bin/python /app/manage.py makemigrations && /app/.venv/bin/python /app/manage.py migrate
