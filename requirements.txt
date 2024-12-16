@@ -31,6 +31,8 @@ optree==0.13.1
 packaging==24.2
 pillow==11.0.0
 protobuf==5.29.1
+psycopg==3.2.3
+psycopg-binary==3.2.3
 Pygments==2.18.0
 pyparsing==3.2.0
 python-dateutil==2.9.0.post0
