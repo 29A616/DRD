@@ -23,11 +23,8 @@ RUN /app/.venv/bin/pip install --upgrade pip setuptools wheel
 # Instala dependencias de Python en el entorno virtual
 RUN /app/.venv/bin/python /app/.venv/bin/pip install --no-cache-dir tensorflow-cpu gunicorn django opencv-python-headless matplotlib pillow whitenoise psycopg[binary]
 
-# Realiza las migraciones de la base de datos
-RUN /app/.venv/bin/python /app/manage.py makemigrations && /app/.venv/bin/python /app/manage.py migrate
-
 # Expone el puerto en el contenedor
 EXPOSE 8000
 
 # Comando de inicio del contenedor
-CMD ["/app/.venv/bin/python", "-m", "gunicorn", "DRD.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["/app/.venv/bin/python", "/app/manage.py", "&&", "/app/.venv/bin/python", "/app/manage.py", "migrate", "&&", "/app/.venv/bin/python", "-m", "gunicorn", "DRD.wsgi:application", "--bind", "0.0.0.0:8000"]
