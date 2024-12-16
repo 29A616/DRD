@@ -40,13 +40,8 @@ CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localho
 CSRF_COOKIE_DOMAIN = os.getenv(
     'RAILWAY_PUBLIC_DOMAIN', 'https://drd-production.up.railway.app')
 
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/login/'
-
-
-# SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+# LOGIN_URL = '/login/'
+# LOGIN_REDIRECT_URL = '/'
 
 SESSION_COOKIE_AGE = 300
 SESSION_SAVE_EVERY_REQUEST = True
@@ -79,7 +74,7 @@ ROOT_URLCONF = 'DRD.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'webserver/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

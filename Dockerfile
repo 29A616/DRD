@@ -27,4 +27,4 @@ RUN /app/.venv/bin/python /app/.venv/bin/pip install --no-cache-dir tensorflow-c
 EXPOSE 8000
 
 # Comando de inicio del contenedor
-CMD ["/bin/sh", "-c", "/app/.venv/bin/python -m gunicorn DRD.wsgi:application --bind 0.0.0.0:8000"]
+CMD ["/bin/sh", "-c", "/app/.venv/bin/python -m gunicorn DRD.wsgi:application --timeout 120 --bind 0.0.0.0:8000"]
