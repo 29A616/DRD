@@ -26,12 +26,39 @@
 body {
     width: 100%;
     min-height: 100vh;
-    overflow: hidden;
+    /* overflow: hidden; */
   }
 
   /* TOP */
 
-nav .top-bar {
+  .topbar {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    background: var(--blue);
+    color: var(--white);
+  }
+
+  .toggle {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+
+  .topbar a{
+    color: var(--white);
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+/* nav .top-bar {
     width: 100%;
     height: 40px;
     pointer-events: none;
@@ -57,21 +84,22 @@ nav .top-bar a{
     color: var(--white);
     text-decoration: none;
     margin-left: 20px;
-}
+} */
 
   /* MENU */
 
   .navigation {
     position: fixed;
-    width: 300px;
+    width: 80px;
     height: 100%;
     background: var(--blue);
     border-left: 10px solid var(--blue);
-    transition: 0.5s;
+    transition: 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     overflow: hidden;
+    left: 0px;
   }
-  .navigation.active {
-    width: 80px;
+  .navigation.active{
+    width: 300px;
   }
 
   .navigation ul {
@@ -79,7 +107,7 @@ nav .top-bar a{
     top: 0;
     left: 0;
     width: 100%;
-    padding: 60px 0px;
+    padding: 140px 0px;
   }
   
   .navigation ul li {
@@ -162,20 +190,18 @@ nav .top-bar a{
 /* ===================== Main ===================== */
 
 main{
-    position: absolute;
+  position: absolute;
+  width: calc(100% - 80px);
+  left: 80px;
+  min-height: calc(100vh - 40px);
+  background: var(--beige);
+  transition: 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  align-items: center;
+}
+  main.active{
     width: calc(100% - 300px);
     left: 300px;
-    height: calc(100vh - 40px);
-    background: var(--beige);
-    transition: 0.5s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  main .active {
-    width: calc(100% - 80px);
-    left: 80px;
-  }
+}
 
   /* ===================== Diagnostic ===================== */
 
@@ -183,9 +209,10 @@ main{
     width: 100%;
     height: 100%;
     padding: 40px;
+    min-height: calc(100vh - 40px);
   }
 
-  .mt-5 h1{
+  h1{
     font-weight: 600;
     color: var(--blue);
     font-size: 2em;
@@ -194,14 +221,21 @@ main{
 
   main .everything{
     width: 100%;
-    padding: 40px 10px; 
+    padding: 40px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
   }
 
   .everything nav{
     width: 100%;
-    padding: 10px 20px;
+    max-width: 900px;
+    padding: 10px 30px;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
   }
 
   .everything a{
@@ -218,7 +252,7 @@ main{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 50%;
+    width: 80%;
   }
 
   .everything nav ul{
@@ -237,6 +271,8 @@ main{
   main .cards{
     padding: 20px;
     background: var(--white);
+    max-width: 900px;
+    width: 90%;
     border-radius: 20px;
     background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
     box-shadow:  14px 14px 28px #b6b1a4,
@@ -295,7 +331,7 @@ main{
     color: rgb(100, 100, 100);
   }
   
-  .cards form p :is(input:focus, input:valid) ~ label, .cards form p :is(textarea:focus) ~ label {
+  .cards form p :is(input:focus, input:valid) ~ label, .cards form p :is(textarea:focus, textarea:valid) ~ label {
     transform: translateY(-50%) scale(.9);
     margin: 0em;
     margin-left: 1.3em;
@@ -305,7 +341,7 @@ main{
     border-radius: 10px;
   }
   
-  .cards form p :is(input:focus, input:valid) {
+  .cards form p :is(input:focus, input:valid), .cards form p :is(textarea:focus, textarea:valid) ~ label {
     border-color: var(--rose);
   }
 
@@ -370,3 +406,414 @@ input#id_image {
   padding: 30px 0px;
 }
 
+/* date-filter */
+
+form.date-filter{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+form.date-filter div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 30px 0px;
+}
+
+form.date-filter input{
+  font-size: 100%;
+    padding: 0.8em;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    border-radius: 20px;
+    width: 100%;
+}
+
+form.date-filter label {
+  font-size: 100%;
+  color: var(--black1);
+  font-weight: 600;
+}
+
+/* list-group */
+
+form.date-filter ~ .list-group{
+  width: 100%;
+  padding: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style-type: none;
+}
+
+
+form.date-filter ~ .list-group li{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* ===================== LOGIN ===================== */
+
+p.description{
+  font-size: 100%;
+  color: var(--black1);
+  font-weight: 600;
+}
+
+form.login{
+  padding: 40px 20px;
+  background: var(--white);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
+  box-shadow:  14px 14px 28px #b6b1a4,
+           -14px -14px 28px #fffff0;
+  width: 40%;
+  max-width: 500px;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+form.login p{
+  margin: 1em 0px 1em 0px;
+  position: relative;
+  width: 90%; max-width: 300px;
+}
+
+form.login p input {
+  font-size: 100%;
+  padding: 0.8em;
+  outline: none;
+  border: 2px solid rgb(200, 200, 200);
+  background-color: transparent;
+  border-radius: 20px;
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .navigation {
+    left: -300px;
+  }
+  .navigation.active {
+    width: 300px;
+    left: 0;
+  }
+  main {
+    width: 100%;
+    left: 0;
+  }
+  main.active {
+    left: 300px;
+}
+
+ form .content{
+   font-size: 80%;
+ }
+
+  form p label {
+    font-size: 80%;
+  }
+
+  .cards form p textarea{
+    width: 300px;
+  }
+
+  .everything nav{
+    font-size: 12px;
+   }
+
+   input#id_image {
+    width: 300px;
+  }
+}
+
+form p label {
+  font-size: 100%;
+  position: absolute;
+  left: 0;
+  padding: 0.8em;
+  margin-left: 0.5em;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  color: rgb(100, 100, 100);
+}
+
+
+form.login p label {
+  font-size: 100%;
+  position: absolute;
+  left: 0;
+  padding: 0.8em;
+  margin-left: 0.5em;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  color: rgb(100, 100, 100);
+}
+
+form.login p label {
+  font-size: 100%;
+  position: absolute;
+  left: 0;
+  padding: 0.8em;
+  margin-left: 0.5em;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  color: rgb(100, 100, 100);
+}
+
+form.login p :is(input:focus, input:valid) ~ label{
+  transform: translateY(-50%) scale(.9);
+  margin: 0em;
+  margin-left: 1.3em;
+  padding: 0.4em;
+  background:  var(--rose);
+  color: var(--white);
+  border-radius: 10px;
+}
+
+form.login p :is(input:focus, input:valid){
+  border-color: var(--rose);
+}
+
+form.login button{
+  width: 40%;
+  max-width: 160px;
+  height: 3em;
+  border-radius: 30em;
+  font-size: 16px;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
+  box-shadow:  14px 14px 28px #b6b1a4,
+           -14px -14px 28px #fffff0;
+  color: rgb(100, 100, 100);
+ }
+ 
+ form.login button::before {
+  content: '';
+  width: 0;
+  height: 3em;
+  border-radius: 30em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(90deg, rgba(203,111,132,1) 26%, rgba(230,79,113,1) 53%);
+  transition: .5s ease;
+  display: block;
+  z-index: -1;
+ }
+ 
+ form.login button:hover::before {
+  width: 160px;
+ }
+
+ form.login button:hover{
+  color: var(--white);
+ }
+
+ /* ===================== REGISTER ===================== */
+
+p.description{
+  font-size: 100%;
+  color: var(--black1);
+  font-weight: 600;
+}
+
+form.register{
+  padding: 40px 40px;
+  background: var(--white);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
+  box-shadow:  14px 14px 28px #b6b1a4,
+           -14px -14px 28px #fffff0;
+  max-width: 500px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+}
+
+form.register p{
+  margin: 1em 0px 1em 0px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 90%; max-width: 300px;
+}
+
+form.register p input{
+  font-size: 100%;
+  padding: 0.8em;
+  outline: none;
+  border: 2px solid rgb(200, 200, 200);
+  background-color: transparent;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+form.register p label{
+  font-size: 100%;
+  position: absolute;
+  left: 0;
+  padding: 0.8em;
+  margin-left: 0.5em;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  color: rgb(100, 100, 100);
+}
+
+form.register p :is(input:focus, input:valid) ~ label{
+  transform: translateY(-50%) scale(.9);
+  margin: 0em;
+  margin-left: 1.3em;
+  padding: 0.4em;
+  background:  var(--rose);
+  color: var(--white);
+  border-radius: 10px;
+}
+
+form.register p :is(input:focus, input:valid){
+  border-color: var(--rose);
+}
+
+form.register button{
+  width: 160px;
+  height: 3em;
+  margin-top: 20px;
+  border-radius: 30em;
+  font-size: 16px;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
+  box-shadow:  14px 14px 28px #b6b1a4,
+           -14px -14px 28px #fffff0;
+  color: var(--black);
+ }
+ 
+ form.register button::before {
+  content: '';
+  width: 0;
+  height: 3em;
+  border-radius: 30em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(90deg, rgba(203,111,132,1) 26%, rgba(230,79,113,1) 53%);
+  transition: .5s ease;
+  display: block;
+  z-index: -1;
+ }
+ 
+ form.register button:hover::before {
+  width: 160px;
+ }
+
+ form.register button:hover{
+  color: var(--white);
+}
+
+/* ===================== RESPONSIVE ===================== */
+
+@media (max-width: 880px){
+  form.login{
+    padding: 40px 20px;
+    background: var(--white);
+    border-radius: 20px;
+    background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
+    box-shadow:  14px 14px 28px #b6b1a4,
+             -14px -14px 28px #fffff0;
+    width: 60%;
+    max-width: 500px;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cards form p textarea{
+    width: 400px;}
+
+    input#id_image {
+      width: 400px;
+    }
+
+}
+
+@media (max-width: 650px){
+  form{
+    padding: 40px 10px;
+    width: 80%;
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 560px){
+  form .content{
+    font-size: 60%;
+  }
+ 
+   form p label {
+     font-size: 60%;
+   }
+ 
+   .cards form p textarea{
+     width: 200px;
+   }
+ 
+   .everything .content-ul{
+     width: 50%;
+   }
+ 
+   .everything nav ul{
+     width: 100%;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     align-items: center;
+     list-style-type: none;
+     gap: 20px;
+   }
+ 
+   input#id_image {
+     width: 200px;
+   }
+ 
+   form span, form ul{
+     font-size: 12px;
+   }
+   
+ }
+ 
+ @media (max-width: 480px){
+   form{
+     padding: 20px 5px;
+     width: 90%;
+     max-width: 500px;
+   }
+ 
+  form .content{
+    font-size: 50%;
+  }
+ 
+   form p label, form.register p label{
+     font-size: 80%;
+   }
+ 
+ 
+   form button{
+     font-size: 10px;
+    }
+ }

@@ -5,11 +5,21 @@ Registro
 {% endblock %}
 
 {% block content %}
-<h1>Formulario de registro</h1>
-<p>Rellene los campos para continuar</p>
-<form method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type='submit'>Registrar</button>
-</form>
+
+<div class="container mt-5">
+
+    <div class="everything">
+        <form method="post" class="register">
+            <div class="content">
+                <h1>Formulario de registro</h1>
+                <p class="description">Rellene los campos para continuar</p>
+            </div>
+                {% csrf_token %}
+                {{ form.as_p }}
+            <button type="submit">Registrar</button>
+        </form>
+    </div>
+   
+</div>
+
 {% endblock %}

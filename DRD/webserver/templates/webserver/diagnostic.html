@@ -5,120 +5,132 @@ Diagnostic tool
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1>Herramienta de Diagnóstico RD</h1>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Diagnóstico</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#" onclick="showCard('patient-card')">Paciente</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showCard('diagnostic-card')">Diagnóstico</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showCard('history-card')">Historial</a>
-                    </li>
-                </ul>
+    <div class="container mt-5">
+        <h1>Herramienta de Diagnóstico RD</h1>
+        <div class="everything">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid content-list">
+                    <a class="navbar-brand" href="#">Diagnóstico</a>
+                    <div class="collapse navbar-collapse content-ul" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item btn-pacient">
+                                <a class="nav-link active" href="#" onclick="showCard('patient-card')">Paciente</a>
+                            </li>
+                            <li class="nav-item btn-diagnostic">
+                                <a class="nav-link" href="#" onclick="showCard('diagnostic-card')">Diagnóstico</a>
+                            </li>
+                            <li class="nav-item btn-historial">
+                                <a class="nav-link" href="#" onclick="showCard('history-card')">Historial</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="cards">
+                <div class="card" id="patient-card">
+                    <div class="card-body">
+                        <h2 class="card-title">Registro del Paciente</h2>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ patient_form.as_p }}
+                            <p>
+                                <button type="submit" name="register_patient" class="btn btn-primary">Registrar Paciente</button>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            
+                <div class="card d-none" id="diagnostic-card">
+                    <div class="card-body">
+                            <h2 class="card-title">Subir Imagen</h2>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ image_form.as_p }}
+                            <p>
+                                <button type="submit" name="upload_image" class="btn btn-primary">Diagnosticar</button>
+                            </p>
+                            </form>
+
+                            <div class="content-result">
+                                <h3>Resultado del Diagnóstico:</h3>
+                                <p>{{ prediction_result }}</p>
+                                <h3>Vista Previa:</h3>
+                                <img id="image-preview" src="#" alt="Vista previa" style="max-width: 200px; display: none;">
+                            </div>
+                    </div>
+                </div>
+                
+                <div class="card d-none" id="history-card">
+                    <div class="card-body">
+                        <h2 class="card-title">Historial de Diagnósticos</h2>
+                        <form method="get" class="mb-3 date-filter">
+                            <input type="hidden" name="tab" value="history-card">
+                            <div>
+                                <label for="date-filter">Filtrar por fecha:</label>
+                                 <input type="date" name="date_filter" id="date-filter" class="form-control"
+                                value="{{ request.GET.date_filter|default:today|date:'Y-m-d' }}">
+                            </div>
+                            
+                            <p>
+                                <button type="submit" class="btn btn-secondary mt-2">Buscar</button>
+                            </p>
+                        </form>
+                        
+                        <h3>Resultados del Historial</h3>
+                        <ul class="list-group">
+                            {% for diagnostic in diagnostics %}
+                                <li class="list-group-item">
+                                    <strong>Paciente:</strong> {{ diagnostic.patient.first_name }} {{ diagnostic.patient.last_name }}<br>
+                                    <strong>Fecha:</strong> {{ diagnostic.consultation_date|date:"d-m-Y H:i" }}<br>
+                                    <strong>Diagnóstico:</strong> {{ diagnostic.diagnosis_result|default:"Sin diagnóstico" }}<br>
+                                    <a href="{{ diagnostic.image.url }}" target="_blank">
+                                        <img src="{{ diagnostic.image.url }}" alt="Imagen Original" style="max-width: 150px;">
+                                    </a>
+                                    {% if diagnostic.gradcam_image %}
+                                        <a href="{{ diagnostic.gradcam_image.url }}" target="_blank">
+                                            <img src="{{ diagnostic.gradcam_image.url }}" alt="Grad-CAM" style="max-width: 150px;">
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item">No se encontraron diagnósticos para esta fecha.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+            </div>
+            
+            
             </div>
         </div>
-    </nav>
-
-    <div class="card" id="patient-card">
-        <div class="card-body">
-            <h2 class="card-title">Registro del Paciente</h2>
-            <form method="post">
-                {% csrf_token %}
-                {{ patient_form.as_p }}
-                <button type="submit" name="register_patient" class="btn btn-primary">Registrar Paciente</button>
-            </form>
-        </div>
     </div>
     
-    <div class="card d-none" id="diagnostic-card">
-        <div class="card-body">
-            <h2 class="card-title">Subir Imagen</h2>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ image_form.as_p }}
-                <button type="submit" name="upload_image" class="btn btn-primary">Diagnosticar</button>
-            </form>
-            <h3>Resultado del Diagnóstico:</h3>
-            <p>{{ prediction_result }}</p>
-            <h3>Vista Previa:</h3>
-            <img id="image-preview" src="#" alt="Vista previa" style="max-width: 200px; display: none;">
-        </div>
-    </div>
+    <script>
+        function showCard(cardId) {
+            document.getElementById('patient-card').classList.add('d-none');
+            document.getElementById('diagnostic-card').classList.add('d-none');
+            document.getElementById('history-card').classList.add('d-none');
+            document.getElementById(cardId).classList.remove('d-none');
+        }
+        
+        function getTabFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('tab');
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeTab = getTabFromURL() || 'patient-card';
+            showCard(activeTab);
+        });
     
-    <div class="card d-none" id="history-card">
-        <div class="card-body">
-            <h2 class="card-title">Historial de Diagnósticos</h2>
-            <form method="get" class="mb-3">
-                <input type="hidden" name="tab" value="history-card">
-                <label for="date-filter">Filtrar por fecha:</label>
-                <input type="date" name="date_filter" id="date-filter" class="form-control"
-                   value="{{ request.GET.date_filter|default:today|date:'Y-m-d' }}">
-                <button type="submit" class="btn btn-secondary mt-2">Buscar</button>
-            </form>
-            
-            <hr>
-            <h3>Resultados del Historial</h3>
-            <ul class="list-group">
-                {% for diagnostic in diagnostics %}
-                    <li class="list-group-item">
-                        <strong>Paciente:</strong> {{ diagnostic.patient.first_name }} {{ diagnostic.patient.last_name }}<br>
-                        <strong>Fecha:</strong> {{ diagnostic.consultation_date|date:"d-m-Y H:i" }}<br>
-                        <strong>Diagnóstico:</strong> {{ diagnostic.diagnosis_result|default:"Sin diagnóstico" }}<br>
-                        <a href="{{ diagnostic.image.url }}" target="_blank">
-                            <img src="{{ diagnostic.image.url }}" alt="Imagen Original" style="max-width: 150px;">
-                        </a>
-                        {% if diagnostic.gradcam_image %}
-                            <a href="{{ diagnostic.gradcam_image.url }}" target="_blank">
-                                <img src="{{ diagnostic.gradcam_image.url }}" alt="Grad-CAM" style="max-width: 150px;">
-                            </a>
-                        {% endif %}
-                    </li>
-                {% empty %}
-                    <li class="list-group-item">No se encontraron diagnósticos para esta fecha.</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    
-    
-    </div>
-</div>
-
-<script>
-    function showCard(cardId) {
-        document.getElementById('patient-card').classList.add('d-none');
-        document.getElementById('diagnostic-card').classList.add('d-none');
-        document.getElementById('history-card').classList.add('d-none');
-        document.getElementById(cardId).classList.remove('d-none');
-    }
-    
-    function getTabFromURL() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get('tab');
-    }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        const activeTab = getTabFromURL() || 'patient-card';
-        showCard(activeTab);
-    });
-
-    document.getElementById('id_image').addEventListener('change', function(event) {
-        const reader = new FileReader();
-        reader.onload = function() {
-            const preview = document.getElementById('image-preview');
-            preview.src = reader.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    });
-</script>
-
+        document.getElementById('id_image').addEventListener('change', function(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const preview = document.getElementById('image-preview');
+                preview.src = reader.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+    </script>
     
 {% endblock %}
