@@ -5,14 +5,27 @@ inicio de sesión
 {% endblock %}
 
 {% block content %}
-<h1>Inicio de sesión</h1>
-<p>Rellene los campos para continuar</p>
-
-<form method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type='submit'>Iniciar Sesión</button>
-</form>
+<div class="container mt-5">
+    <div class="everything">
+        <form method="post" class="login">
+           <div class="content">
+               <h1>Inicio de sesión</h1>
+               <p class="description">Rellene los campos para continuar</p>
+           </div>
+                {% csrf_token %}        
+                {% for field in form %}
+                <p>
+                    {{ field }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                </p>
+                {% if field.help_text %}
+                    <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
+                {% endif %}
+                {% endfor %}
+           <button type="submit">Iniciar Sesión</button>
+       </form>
+   </div>
+</div>
 {% endblock %}
 
 

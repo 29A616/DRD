@@ -1,4 +1,3 @@
-from .models import Patient
 from django import forms
 from django.contrib.auth.models import User
 from .models import Patient, DiagnosticImage
@@ -41,8 +40,17 @@ class PatientForm(forms.ModelForm):
             'contact': 'Contacto',
         }
         widgets = {
-            'birth_date': forms.DateInput(attrs={'type': 'date'}),
+            'birth_date': forms.DateInput(attrs={
+                'type': 'date',
+                'class': 'form-control',
+            }, format='%Y-%m-%d'),  # Asegura el formato ISO 8601
         }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            # Si el campo tiene valor, asegúrate de que el formato sea consistente
+            if 'birth_date' in self.fields:
+                self.fields['birth_date'].input_formats = ['%Y-%m-%d']
 
 
 class DiagnosticImageForm(forms.ModelForm):

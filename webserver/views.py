@@ -30,6 +30,7 @@ def signin(request):
             return redirect('login')
     else:
         form = UserCreationForm()
+        print(form)
     return render(request, 'webserver/signin.html', {'form': form})
 
 
@@ -114,6 +115,10 @@ def diagnostic(request):
             patient.delete()
             messages.success(request, 'Paciente eliminado exitosamente.')
             return redirect('/diagnostic/?tab=diagnostic-card')
+
+        # Manejar deselección de paciente}
+        if 'clean_patient' in request.POST:
+            selected_patient = None
 
         # Manejar carga de imágenes
         if 'upload_image' in request.POST:
