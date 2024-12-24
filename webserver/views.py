@@ -30,7 +30,6 @@ def signin(request):
             return redirect('login')
     else:
         form = UserCreationForm()
-        print(form)
     return render(request, 'webserver/signin.html', {'form': form})
 
 
@@ -72,6 +71,7 @@ def profile(request):
             return redirect('profile')
     else:
         form = UserProfileForm(instance=request.user)
+        print("formulario enviado")
     return render(request, 'webserver/profile.html', {'form': form})
 
 
@@ -148,7 +148,7 @@ def diagnostic(request):
                 # Actualizar prediction_result para mostrarlo en la tarjeta de diagnóstico
                 prediction_result = diagnosis_text
 
-                return redirect('/diagnostic/?tab=diagnostic-card')
+                return redirect('/diagnostic/?tab=history-card')
 
     elif request.method == 'GET' and 'patient_id' in request.GET:
         patient_id = request.GET.get('patient_id')

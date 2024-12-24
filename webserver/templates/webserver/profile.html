@@ -8,23 +8,41 @@ Profile
 
 <div class="container mt-5">
     <div class="everything">
-        <form method="post" class="register">
+        <form method="post" class="register" id="registerForm">
             <div class="content">
                 <h2>Profile</h2>
             </div>
                 {% csrf_token %}
                 {% for field in form %}
-                <p>
-                    {{ field }}
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                </p>
-                {% if field.help_text %}
-                    <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
-                {% endif %}
+                    {% if field.name == 'username' %}
+                    <p>
+                        {{ field }}
+                    </p>
+                    {% elif field.name == 'password' %}
+                    <p>
+                        <input type="password" name="{{ field.name }}" value="" required="" aria-describedby="{{ field.id_for_label }}_helptext" id="{{ field.id_for_label }}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    </p>
+                    {% else %}
+                    <p>
+                        <input type="text" name="{{ field.name }}" value="{{ field.value }}" required="" aria-describedby="{{ field.id_for_label }}_helptext" id="{{ field.id_for_label }}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    </p>
+                    {% if field.help_text %}
+                        <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
+                    {% endif %}
+                    {% endif %}
                 {% endfor %}
             <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="delete" class="btn btn-primary" onclick=disableValidation()>Delete user</button>
+            <button type="discard" class="btn btn-primary" onclick=disableValidation()>Discard changes</button>
         </form>
     </div>
 </div>
 
+<script>
+    function disableValidation() {
+        document.getElementById('registerForm').noValidate = true;
+    }
+</script>
 {% endblock %}

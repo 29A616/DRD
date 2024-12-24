@@ -1,10 +1,39 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 Home
 {% endblock %}
 
 {% block content %}
-<h1>Página principal</h1>
-<p>Esta es la página principal</p>
+<div style="width: 1000px; padding: 0px 0px 0px 200px;">
+    <h1>Introduccion</h1>
+<p>
+    La aplicación web RDR (Diagnóstico de Retinopatía Diabética, por sus siglas en inglés) es una herramienta de clasificación de imágenes basada en Deep Learning, desarrollada por estudiantes de la Universidad de Guayaquil como herramienta de apoyo a los profesionales en el área de la oftalmología en el diagnóstico de esta condición. En base a fotografías de fondo del ojo permite brindar un diagnóstico de acuerdo a 5 tipos de severidad que va desde "no posee" hasta "posee retinopatía diabética proliferativa".
+</p>
+<br>
+<div>
+<img src="{% static '/webserver/img/sample-img.png' %}" style="max-width: 300px; max-height: 300px;">
+<img src="{% static '/webserver/img/sample-gradcam.jpg' %}" style="max-width: 300px; max-height: 300px;">
+</div>
+    <br>
+<p>
+    El uso es sencillo, solo deben seguirse los siguientes pasos:
+</p>
+
+<ul>
+    <li>Crea una cuenta para acceder a la aplicación.</li>
+    <li>Accede a la sección de diagnóstico desde el menú principal.</li>
+    <li>Registra nuevos pacientes llenando el formulario con su información.</li>
+    <li>Selecciona un paciente de la lista para proceder con el diagnóstico.</li>
+    <li>Carga una imagen de fondo de ojo para que el modelo preentrenado la analice y la clasifique.</li>
+    <li>Revisa las clasificaciones realizadas previamente en la sección de historial.</li>
+    <li>Filtra los diagnósticos por fecha para facilitar la búsqueda.</li>
+    <li>Haz clic en el nombre de un paciente en el historial para actualizar su información o eliminarlo del registro.</li>
+</ul>
+<br>
+<p>
+    La aplicación es de caracter experimental y se encuentra en una fase temprana de desarrollo, por lo cual pueden presentarse inconvenientes en su funcionamiento, así como realizar clasificaciones erróneas, por lo cual no remplaza a un profesional.
+</p>
+</div>
 {% endblock %}

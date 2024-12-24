@@ -33,12 +33,18 @@
           <form method="post">
             {% csrf_token %}       
             {% for field in patient_form %}
+            {% if field.name == 'birth_date' %}
+            <p>
+                <input type="date" name="{{ field.name }}" class="form-control" required="" id="{{ field.id_for_label}}">
+            </p>
+            {% else %}
             <p>
                 {{ field }}
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
             </p>
             {% if field.help_text %}
                 <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
+            {% endif %}
             {% endif %}
             {% endfor %}
 
@@ -67,7 +73,6 @@
             {% for field in image_form %}
             <p>
                 {{ field }}
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
             </p>
             {% if field.help_text %}
                 <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
@@ -78,8 +83,8 @@
             </p>
           </form>
           <div class="content-result">
-            <h3>Resultado del Diagnóstico:</h3>
-            <p>{{ prediction_result|default:"No hay resultados disponibles" }}</p>
+            {% comment %} <h3>Resultado del Diagnóstico:</h3>
+            <p>{{ prediction_result|default:"No hay resultados disponibles" }}</p> {% endcomment %}
             <h3>Vista Previa:</h3>
             <img id="image-preview" src="#" alt="Vista previa" style="max-width: 200px; display: none" />
           </div>

@@ -16,15 +16,26 @@ Registro
             </div>
                 {% csrf_token %}
                 {% for field in form %}
-                <p>
-                    {{ field }}
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                </p>
-                {% if field.help_text %}
-                    <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
-                {% endif %}
+                    {% if field.name == 'password1' or field.name == 'password2' %}
+                    <p>
+                        <input type="password" name="{{ field.name }}" required="" aria-describedby="{{ field.id_for_label }}_helptext" id="{{ field.id_for_label }}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    </p>
+                    {% if field.help_text %}
+                        <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
+                    {% endif %}
+                    {% else %}
+                    <p>
+                        <input type="text" name="{{ field.name }}" required="" aria-describedby="{{ field.id_for_label }}_helptext" id="{{ field.id_for_label }}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    </p>
+                    {% if field.help_text %}
+                        <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
+                    {% endif %}
+                    {% endif %}
                 {% endfor %}
             <button type="submit">Registrar</button>
+            <p class="warning">Al registrarte aceptas que la información ingresada en la aplicación podrá ser usadas con fines investigativos Universidad de Guayaquill. Podrás solicitar la eliminación de los datos en cualquier momento a través del perfil de usuario.</p>
         </form>
     </div>
 </div>

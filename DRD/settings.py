@@ -38,7 +38,7 @@ CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localho
                         "http://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localhost')]
 
 CSRF_COOKIE_DOMAIN = os.getenv(
-    'RAILWAY_PUBLIC_DOMAIN', 'https://drd-production.up.railway.app')
+    'RAILWAY_PUBLIC_DOMAIN', 'http://drd-production.up.railway.app')
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
