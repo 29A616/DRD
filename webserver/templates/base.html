@@ -7,7 +7,6 @@
     <title>{% block title %}My Site{% endblock %}</title>
     <link rel="stylesheet" href="{% static "webserver/css/style.css" %}">
     <script src="https://kit.fontawesome.com/cd39f42707.js" crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"> -->
 </head>
 <body class="d-flex flex-column min-vh-100">
     <!-- Navbar -->
@@ -90,64 +89,109 @@
         </div>
     </footer>
     <script>
-        // add hovered class to selected list item
+        // Add hovered class to selected list item
         let list = document.querySelectorAll(".navigation li");
-
+    
         function activeLink() {
-        list.forEach((item) => {
-            item.classList.remove("hovered");
-        });
-        this.classList.add("hovered");
+            list.forEach((item) => {
+                item.classList.remove("hovered");
+            });
+            this.classList.add("hovered");
         }
-
+    
         list.forEach((item) => item.addEventListener("mouseover", activeLink));
-
+    
         // Menu Toggle
         let toggle = document.querySelector(".toggle");
         let navigation = document.querySelector(".navigation");
         let main = document.querySelector("main");
-
+    
         toggle.onclick = function () {
-        navigation.classList.toggle("active");
-        main.classList.toggle("active");
+            navigation.classList.toggle("active");
+            main.classList.toggle("active");
         };
-
-        // change section
-
-
-        // sections
+    
+        // Sections
         let paciente = document.getElementById("patient-card");
         let diagnostico = document.getElementById("diagnostic-card");
         let historial = document.getElementById("history-card");
-
-        // btns
-
+    
+        // Buttons
         let btn_paciente = document.querySelector(".btn-pacient");
         let btn_diagnostico = document.querySelector(".btn-diagnostic");
         let btn_historial = document.querySelector(".btn-historial");
-
+    
+        // Initial State
+        paciente.style.display = "block";
         diagnostico.style.display = "none";
         historial.style.display = "none";
-
+    
+        // Functions to switch tabs and update server state
+        async function switchTab(tabName) {
+            // Update the visible section
+            if (tabName === "diagnostic-card") {
+                diagnostico.style.display = "block";
+                paciente.style.display = "none";
+                historial.style.display = "none";
+            } else if (tabName === "history-card") {
+                diagnostico.style.display = "none";
+                paciente.style.display = "none";
+                historial.style.display = "block";
+            } else {
+                diagnostico.style.display = "none";
+                paciente.style.display = "block";
+                historial.style.display = "none";
+            }
+    
+            // Send the active tab to the server
+            try {
+                await fetch("/save-active-tab/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCsrfToken(),
+                    },
+                    body: JSON.stringify({ active_tab: tabName }),
+                });
+            } catch (error) {
+                console.error("Error saving active tab:", error);
+            }
+        }
+    
+        // Functions to handle button clicks
         btn_diagnostico.onclick = function () {
-            diagnostico.style.display = "block";
-            paciente.style.display = "none";
-            historial.style.display = "none";
+            switchTab("diagnostic-card");
         };
-
+    
         btn_historial.onclick = function () {
-            diagnostico.style.display = "none";
-            paciente.style.display = "none";
-            historial.style.display = "block";
+            switchTab("history-card");
         };
-
+    
         btn_paciente.onclick = function () {
-            diagnostico.style.display = "none";
-            paciente.style.display = "block";
-            historial.style.display = "none";
+            switchTab("patient-card");
         };
+    
+        // Fetch the active tab from the server on page load
+        async function initializeActiveTab() {
+            try {
+                const response = await fetch("/save-active-tab/");
+                const data = await response.json();
+                const activeTab = data.active_tab || "patient-card";
+                console.log("active_tab: ", activeTab);
+                switchTab(activeTab);
+            } catch (error) {
+                console.error("Error fetching active tab:", error);
+                switchTab("patient-card"); // Default to patient-card on error
+            }
+        }
+    
+        // CSRF Token Helper
+        function getCsrfToken() {
+            return document.querySelector("[name=csrfmiddlewaretoken]").value;
+        }
+    
+        // Initialize the active tab on page load
+        document.addEventListener("DOMContentLoaded", initializeActiveTab);
     </script>
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" crossorigin='anonymous'></script> -->
 </body>
 </html>

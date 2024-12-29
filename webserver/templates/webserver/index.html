@@ -13,8 +13,14 @@ Home
 </p>
 <br>
 <div>
-<img src="{% static '/webserver/img/sample-img.png' %}" style="max-width: 300px; max-height: 300px;">
-<img src="{% static '/webserver/img/sample-gradcam.jpg' %}" style="max-width: 300px; max-height: 300px;">
+    <figure>
+        <img src="{% static '/webserver/img/sample-img.png' %}" style="max-width: 300px; max-height: 300px;">
+        <figcaption>Imagen de fondo del ojo del paciente</figcaption>
+    </figure>
+    <figure>
+        <img src="{% static '/webserver/img/sample-gradcam.jpg' %}" style="max-width: 300px; max-height: 300px;">
+        <figcaption>Mapa de calor generado por el modelo de Deep Learning</figcaption>
+    </figure>
 </div>
     <br>
 <p>

@@ -12,7 +12,10 @@ inicio de sesión
                <h1>Inicio de sesión</h1>
                <p class="description">Rellene los campos para continuar</p>
            </div>
-                {% csrf_token %}        
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <p class="error">{{ form.non_field_errors }}</p>
+                {% endif %}
                 {% for field in form %}
                 <p>
                     {{ field }}
@@ -23,6 +26,8 @@ inicio de sesión
                 {% endif %}
                 {% endfor %}
            <button type="submit">Iniciar Sesión</button>
+           <br>
+           <p>¿Aún no estás registrado? Registrate <a href="/signin/">aquí</a></p>
        </form>
    </div>
 </div>

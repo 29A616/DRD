@@ -1,15 +1,16 @@
-# from django.utils.timezone import datetime  # Para manejo de fechas
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from .forms import UserProfileForm, PatientForm, DiagnosticImageForm
 from .models import Patient, DiagnosticImage
 from diagnostic_tools.model_diagnostic import make_prediction, generate_gradcam
 import os
 from datetime import date
+import json
 
 
 CLASS_MAPPING = {
@@ -76,13 +77,54 @@ def profile(request):
 
 
 @login_required
+def get_patient_data(request, patient_id):
+    patient = get_object_or_404(Patient, id=patient_id, user=request.user)
+    data = {
+        "first_name": patient.first_name,
+        "last_name": patient.last_name,
+        "age": patient.age,
+        "birth_date": patient.birth_date.strftime("%Y-%m-%d"),
+        "medical_history": patient.medical_history,
+        "contact": patient.contact,
+    }
+    return JsonResponse(data)
+
+
+@csrf_exempt
+def set_selected_patient(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        patient_id = data.get('patient_id')
+        print("Patiente ID: ", patient_id)
+
+        # Verifica que el paciente pertenece al usuario actual
+        patient = get_object_or_404(Patient, id=patient_id, user=request.user)
+        print("Paciente existe?: ", patient)
+
+        # Establece el paciente seleccionado en la sesión
+        request.session['selected_patient_id'] = patient.id
+
+        return JsonResponse({'message': 'Paciente seleccionado actualizado con éxito.'})
+    return JsonResponse({'error': 'Método no permitido.'}, status=405)
+
+
+@login_required
 def diagnostic(request):
     patient_form = PatientForm()
     image_form = DiagnosticImageForm(user=request.user)
     patients = Patient.objects.filter(user=request.user).order_by('-id')
     diagnostics = None
     prediction_result = None
+    active_tab = None
     selected_patient = None
+    if 'selected_patient_id' in request.session:
+        try:
+            selected_patient = Patient.objects.get(
+                id=request.session['selected_patient_id'], user=request.user)
+        except Patient.DoesNotExist:
+            # Si no se encuentra el paciente, elimina el ID de la sesión
+            del request.session['selected_patient_id']
+            selected_patient = None
 
     if request.method == 'POST':
         # Manejar registro de pacientes
@@ -90,7 +132,7 @@ def diagnostic(request):
             patient_form = PatientForm(request.POST)
             if patient_form.is_valid():
                 patient = patient_form.save(commit=False)
-                patient.user = request.user  # Asignar el usuario autenticado
+                patient.user = request.user
                 patient.save()
                 messages.success(request, 'Paciente registrado exitosamente.')
                 return redirect('/diagnostic/?tab=diagnostic-card')
@@ -116,7 +158,7 @@ def diagnostic(request):
             messages.success(request, 'Paciente eliminado exitosamente.')
             return redirect('/diagnostic/?tab=diagnostic-card')
 
-        # Manejar deselección de paciente}
+        # Manejar deselección de paciente
         if 'clean_patient' in request.POST:
             selected_patient = None
 
@@ -126,18 +168,16 @@ def diagnostic(request):
                 request.POST, request.FILES, user=request.user)
             if image_form.is_valid():
                 diagnostic_image = image_form.save(commit=False)
-                diagnostic_image.save()  # Guarda para asegurar nombre y rutas
+                diagnostic_image.save()
 
                 image_path = diagnostic_image.image.path
                 predicted_class = make_prediction(image_path)
                 diagnosis_text = CLASS_MAPPING.get(
                     predicted_class, "Error en la clasificación")
 
-                # Asignar el resultado del diagnóstico
                 diagnostic_image.diagnosis_result = diagnosis_text
-                diagnostic_image.save()  # Guarda el resultado del diagnóstico
+                diagnostic_image.save()
 
-                # Generar Grad-CAM
                 gradcam_path = os.path.join(
                     'media', diagnostic_image.gradcam_image.name)
                 try:
@@ -145,10 +185,7 @@ def diagnostic(request):
                 except Exception as e:
                     messages.error(request, f"Error al generar Grad-CAM: {e}")
 
-                # Actualizar prediction_result para mostrarlo en la tarjeta de diagnóstico
                 prediction_result = diagnosis_text
-
-                return redirect('/diagnostic/?tab=history-card')
 
     elif request.method == 'GET' and 'patient_id' in request.GET:
         patient_id = request.GET.get('patient_id')
@@ -156,22 +193,19 @@ def diagnostic(request):
             Patient, id=patient_id, user=request.user)
         patient_form = PatientForm(instance=selected_patient)
 
-    # Método para filtrar por fecha y nombre de paciente
     if request.method == 'GET':
         date_filter = request.GET.get('date_filter', str(date.today()))
-        patient_name_filter = request.GET.get('patient_name_filter', '')
-
         diagnostics = DiagnosticImage.objects.filter(
-            patient__user=request.user
-        )
+            patient__user=request.user)
 
-        # Filtrar por fecha si el filtro de fecha fue proporcionado
         if date_filter:
             diagnostics = diagnostics.filter(
                 consultation_date__date=date_filter)
 
-        # Ordenar por fecha de consulta en orden descendente
         diagnostics = diagnostics.order_by('-consultation_date')
+
+    # Obtener la pestaña activa desde la sesión
+    active_tab = request.session.get('active_tab', 'patient-card')
 
     return render(request, 'webserver/diagnostic.html', {
         'patient_form': patient_form,
@@ -180,5 +214,24 @@ def diagnostic(request):
         'diagnostics': diagnostics,
         'prediction_result': prediction_result,
         'selected_patient': selected_patient,
-        'today': date.today()
+        'today': date.today(),
+        'active_tab': active_tab
     })
+
+
+@csrf_exempt
+def save_active_tab(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            active_tab = data.get('active_tab', 'patient-card')
+            request.session['active_tab'] = active_tab
+            print("POST:", active_tab)
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    elif request.method == 'GET':
+        active_tab = request.session.get('active_tab', 'patient-card')
+        print("GET:", active_tab)
+        return JsonResponse({'active_tab': active_tab})
+    return JsonResponse({'status': 'error'}, status=400)

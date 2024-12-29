@@ -15,6 +15,9 @@ Registro
                 <p class="description">Rellene los campos para continuar</p>
             </div>
                 {% csrf_token %}
+                {% if form.non_field_errors %}
+                <p class="error">{{ form.non_field_errors }}</p>
+                {% endif %}
                 {% for field in form %}
                     {% if field.name == 'password1' or field.name == 'password2' %}
                     <p>
@@ -35,6 +38,9 @@ Registro
                     {% endif %}
                 {% endfor %}
             <button type="submit">Registrar</button>
+            <br>
+            <p>¿Ya tienes una cuenta? Inicia sesión <a href="/login/">aquí</a></p>
+            <br>
             <p class="warning">Al registrarte aceptas que la información ingresada en la aplicación podrá ser usadas con fines investigativos Universidad de Guayaquill. Podrás solicitar la eliminación de los datos en cualquier momento a través del perfil de usuario.</p>
         </form>
     </div>
