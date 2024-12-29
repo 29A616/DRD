@@ -192,6 +192,59 @@
     
         // Initialize the active tab on page load
         document.addEventListener("DOMContentLoaded", initializeActiveTab);
+
+        async function loadPatientData(patientId) {
+            try {
+                // Fetch patient data
+                const response = await fetch(`/get-patient-data/${patientId}/`);
+                if (!response.ok) {
+                    throw new Error("Error al obtener los datos del paciente.");
+                }
+        
+                const data = await response.json();
+        
+                // Actualizar campos del formulario de paciente
+                document.querySelector('[name="first_name"]').value = data.first_name;
+                document.querySelector('[name="last_name"]').value = data.last_name;
+                document.querySelector('[name="age"]').value = data.age;
+                document.querySelector('[name="birth_date"]').value = data.birth_date;
+                document.querySelector('[name="medical_history"]').value = data.medical_history;
+                document.querySelector('[name="contact"]').value = data.contact;
+        
+                // Set selected patient on the backend
+                await setSelectedPatient(patientId);
+        
+                // Cambiar a la pestaña "patient-card"
+                switchTab("patient-card");
+        
+                // Actualizar botones dinámicamente para edición
+                document.querySelector('input[name="patient_id"]').value = patientId;
+                document.querySelectorAll('.btn-secondary, .btn-danger').forEach(btn => {
+                    btn.style.display = "inline-block";
+                });
+            } catch (error) {
+                console.error("Error al cargar los datos del paciente:", error);
+            }
+        }
+        
+        async function setSelectedPatient(patientId) {
+            try {
+                const response = await fetch('/set-selected-patient/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken(),
+                    },
+                    body: JSON.stringify({ patient_id: patientId }),
+                });
+                if (!response.ok) {
+                    throw new Error("Error al establecer el paciente seleccionado.");
+                }
+            } catch (error) {
+                console.error("Error al establecer el paciente seleccionado:", error);
+            }
+        }
+        
     </script>
 </body>
 </html>
