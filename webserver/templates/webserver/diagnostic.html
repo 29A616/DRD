@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Diagnostic Tool{% endblock %}
+{% block title %}Herramienta de diagnóstico RD{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
@@ -8,7 +8,7 @@
   <div class="everything d-none">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid content-list">
-        <a class="navbar-brand" href="#">Diagnóstico</a>
+       {% comment %}  <a class="navbar-brand" href="#">Diagnóstico</a> {% endcomment %}
         <div class="collapse navbar-collapse content-ul" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item btn-pacient">
@@ -48,18 +48,9 @@
             {% endif %}
             {% endfor %}
 
-            <p>
-              {% if selected_patient %}
-                  <input type="hidden" name="patient_id" value="{{ selected_patient.id }}">
-                  <button type="submit" name="update_patient" class="btn btn-secondary mt-2">Actualizar</button>
-                  <button type="submit" name="delete_patient" class="btn btn-danger mt-2">Eliminar</button>
-                  <button type="submit" name="clean_patient" class="btn btn-danger mt-2">Volver</button>
-              {% else %}
-                  <button type="submit" name="register_patient" class="btn btn-primary">Registrar Paciente</button>
-              {% endif %}
-            </p>
-            
-            </p>
+            <p id="buttons-container">
+          </p>
+          
           </form>
         </div>
       </div>
@@ -82,6 +73,13 @@
               <button type="submit" name="upload_image" class="btn btn-primary">Diagnosticar</button>
             </p>
           </form>
+          <div class="content-preview" style="display: none;">
+            <br>
+            <h3>Vista previa</h3>
+            <div class="image-container">
+                <img id="image-preview" src="" alt="Vista previa de la imagen">
+            </div>
+          </div>
           <div class="content-result">
             <h3>Resultados del Diagnóstico</h3>
             <br>

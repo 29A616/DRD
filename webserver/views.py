@@ -8,6 +8,7 @@ from django.contrib import messages
 from .forms import UserProfileForm, PatientForm, DiagnosticImageForm
 from .models import Patient, DiagnosticImage
 from diagnostic_tools.model_diagnostic import make_prediction, generate_gradcam
+from django.template.loader import render_to_string
 import os
 from datetime import date
 import json
@@ -72,7 +73,7 @@ def profile(request):
             return redirect('profile')
     else:
         form = UserProfileForm(instance=request.user)
-        print("formulario enviado")
+        # print("formulario enviado")
     return render(request, 'webserver/profile.html', {'form': form})
 
 
@@ -95,15 +96,20 @@ def set_selected_patient(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         patient_id = data.get('patient_id')
-        print("Patiente ID: ", patient_id)
+        # print("Patiente ID: ", patient_id)
 
         # Verifica que el paciente pertenece al usuario actual
         patient = get_object_or_404(Patient, id=patient_id, user=request.user)
-        print("Paciente existe?: ", patient)
+        # print("Paciente existe?: ", patient)
 
         # Establece el paciente seleccionado en la sesión
         request.session['selected_patient_id'] = patient.id
 
+        # Renderizar fragmento HTML dinámicamente
+        # buttons_html = render_to_string(
+        #    'buttons.html', {'selected_patient': patient})
+
+        # , 'html': buttons_html})
         return JsonResponse({'message': 'Paciente seleccionado actualizado con éxito.'})
     return JsonResponse({'error': 'Método no permitido.'}, status=405)
 
@@ -119,12 +125,10 @@ def diagnostic(request):
     selected_patient = None
     if 'selected_patient_id' in request.session:
         try:
-            selected_patient = Patient.objects.get(
-                id=request.session['selected_patient_id'], user=request.user)
-        except Patient.DoesNotExist:
-            # Si no se encuentra el paciente, elimina el ID de la sesión
             del request.session['selected_patient_id']
             selected_patient = None
+        except Patient.DoesNotExist:
+            pass
 
     if request.method == 'POST':
         # Manejar registro de pacientes
@@ -159,8 +163,8 @@ def diagnostic(request):
             return redirect('/diagnostic/?tab=diagnostic-card')
 
         # Manejar deselección de paciente
-        if 'clean_patient' in request.POST:
-            selected_patient = None
+        # if 'clean_patient' in request.POST:
+        #    selected_patient = None
 
         # Manejar carga de imágenes
         if 'upload_image' in request.POST:
@@ -207,6 +211,8 @@ def diagnostic(request):
     # Obtener la pestaña activa desde la sesión
     active_tab = request.session.get('active_tab', 'patient-card')
 
+    # print("Selected patient view:", selected_patient)
+
     return render(request, 'webserver/diagnostic.html', {
         'patient_form': patient_form,
         'image_form': image_form,
@@ -226,12 +232,12 @@ def save_active_tab(request):
             data = json.loads(request.body)
             active_tab = data.get('active_tab', 'patient-card')
             request.session['active_tab'] = active_tab
-            print("POST:", active_tab)
+            # print("POST:", active_tab)
             return JsonResponse({'status': 'success'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     elif request.method == 'GET':
         active_tab = request.session.get('active_tab', 'patient-card')
-        print("GET:", active_tab)
+        # print("GET:", active_tab)
         return JsonResponse({'active_tab': active_tab})
     return JsonResponse({'status': 'error'}, status=400)

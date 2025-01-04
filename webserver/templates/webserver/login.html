@@ -14,7 +14,7 @@ inicio de sesión
            </div>
                 {% csrf_token %}
                 {% if form.non_field_errors %}
-                <p class="error">{{ form.non_field_errors }}</p>
+                {{ form.non_field_errors }}
                 {% endif %}
                 {% for field in form %}
                 <p>
@@ -27,7 +27,7 @@ inicio de sesión
                 {% endfor %}
            <button type="submit">Iniciar Sesión</button>
            <br>
-           <p>¿Aún no estás registrado? Registrate <a href="/signin/">aquí</a></p>
+           <p class="redirect">¿Aún no estás registrado? <a href="/signin/">Registrate aquí</a></p>
        </form>
    </div>
 </div>

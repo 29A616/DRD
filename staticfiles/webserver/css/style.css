@@ -21,6 +21,8 @@
     --brown2: #5d544d;
     --beige: #e1daca;
     --rose: #cb6f84;
+    --rose2: rgba(230,79,113,1);
+    
   }
 
 body {
@@ -202,6 +204,64 @@ main{
     width: calc(100% - 300px);
     left: 300px;
 }
+
+main .inf{
+  padding: 30px;
+  background: var(--white);
+  width: 90%;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
+  box-shadow:  14px 14px 28px #b6b1a4,
+           -14px -14px 28px #fffff0;
+  margin-bottom: 25px;
+}
+
+main .inf p{
+ color: var(--black1);
+ line-height: 25px;
+ margin-bottom: 20px;
+}
+
+main .inf div{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+ }
+
+ main .inf figure{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 15px;
+ }
+
+ main .inf img{
+  margin-bottom: 10px;
+  border-radius: 10px;
+  width: 100%;
+ }
+
+ main .inf figcaption{
+  font-size: .8rem;
+  color: var(--brown2);
+ }
+
+ main .instructions h2{
+  font-size: 1.2rem;
+  color: var(--blue);
+  margin-bottom: 15px;
+ }
+
+ main .instructions ul{
+   line-height: 30px;
+  color: var(--blue);
+  margin-bottom: 15px;
+ }
+
+ main .instructions p{
+   color: var(--blue);
+   font-weight: bold;
+ }
 
   /* ===================== Diagnostic ===================== */
 
@@ -484,7 +544,7 @@ form.login{
 form.login p{
   margin: 1em 0px 1em 0px;
   position: relative;
-  width: 90%; max-width: 300px;
+  width: 90%; max-width: 310px;
 }
 
 form.login p input {
@@ -620,12 +680,18 @@ form.login button{
   color: var(--white);
  }
 
+ form.login .redirect a{
+  color: var(--rose2);
+  font-weight: bold;
+ }
+
  /* ===================== REGISTER ===================== */
 
 p.description{
   font-size: 100%;
   color: var(--black1);
   font-weight: 600;
+  text-align: center;
 }
 
 form.register{
@@ -642,13 +708,22 @@ form.register{
   align-items: center;
 }
 
+form.register{
+  text-align: center;
+}
+
+form.register div p{
+  width: 100%;
+  text-align: center;
+}
+
 form.register p{
   margin: 1em 0px 1em 0px;
   position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 90%; max-width: 300px;
+  width: 90%; max-width: 310px;
 }
 
 form.register p input{
@@ -725,6 +800,35 @@ form.register button{
   color: var(--white);
 }
 
+form.register p.warning{
+  color: var(--blue);
+  font-weight: bold;
+  width: 90%;
+  text-align: center;
+  min-width: 90%;
+}
+
+
+form.register ul{
+  line-height: 30px;
+  color: var(--blue);
+}
+
+form.register .redirect a{
+  color: var(--rose2);
+  font-weight: bold;
+}
+
+/* That is the error class*/
+
+ul.errorlist.nonfield {
+  list-style-type: none;
+  text-align: center;
+  color: var(--rose);
+  font-weight: bold;
+  font-size: 1em;
+}
+
 /* ===================== RESPONSIVE ===================== */
 
 @media (max-width: 880px){
@@ -749,6 +853,11 @@ form.register button{
     input#id_image {
       width: 400px;
     }
+
+    main .inf div{
+      display: grid;
+      grid-template-columns: 1fr;
+     }
 
 }
 
@@ -816,4 +925,28 @@ form.register button{
    form button{
      font-size: 10px;
     }
+
+    main .inf{
+      padding: 20px;
+      width: 95%;
+    }
  }
+ 
+ /* ADDED */
+
+ .content-preview {
+  text-align: left; /* Mantiene el encabezado alineado a la izquierda (opcional) */
+}
+
+.image-container {
+  display: flex; /* Habilita flexbox para centrar la imagen */
+  justify-content: center; /* Centra horizontalmente la imagen */
+  align-items: center; /* Centra verticalmente la imagen dentro del contenedor */
+  width: 100%; /* Asegura que el contenedor de la imagen ocupe todo el ancho disponible */
+}
+
+#image-preview {
+  max-width: 500px; /* Limita el ancho de la imagen */
+  height: auto; /* Mantiene la proporción de la imagen */
+  margin-top: 10px;
+}

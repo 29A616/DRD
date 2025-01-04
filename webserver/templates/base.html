@@ -19,7 +19,7 @@
                             <span class="icon">
                                 <i class="fa-solid fa-home"></i>
                             </span>
-                            <span class="title">Home</span>
+                            <span class="title">Inicio</span>
                         </a>
                     </li>
                     {% if user.is_authenticated %}
@@ -28,7 +28,7 @@
                             <span class="icon">
                                 <i class="fa-solid fa-stethoscope"></i>
                             </span>
-                            <span class="title">Diagnostic</span>
+                            <span class="title">Diagnóstico</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -36,7 +36,7 @@
                             <span class="icon">
                                 <i class="fa-solid fa-user"></i>
                             </span>
-                            <span class="title">profile</span>
+                            <span class="title">Perfil de usuario</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -44,7 +44,7 @@
                             <span class="icon">
                                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                             </span>
-                            <span class="title">Logout</span>
+                            <span class="title">Cerrar sesión</span>
                         </a>
                     </li>
                     {% endif %}
@@ -54,7 +54,7 @@
                             <span class="icon">
                                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
                             </span>
-                            <span class="title">Login</span>
+                            <span class="title">Iniciar sesión</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -62,7 +62,7 @@
                             <span class="icon">
                                 <i class="fa-solid fa-user-plus"></i>
                             </span>
-                            <span class="title">Sing Up</span>
+                            <span class="title">Registarse</span>
                         </a>
                     </li>
                     {% endif %}                    
@@ -195,37 +195,61 @@
 
         async function loadPatientData(patientId) {
             try {
-                // Fetch patient data
-                const response = await fetch(`/get-patient-data/${patientId}/`);
-                if (!response.ok) {
-                    throw new Error("Error al obtener los datos del paciente.");
+                if (patientId) {
+                    // Fetch patient data
+                    const response = await fetch(`/get-patient-data/${patientId}/`);
+                    if (!response.ok) {
+                        throw new Error("Error al obtener los datos del paciente.");
+                    }
+        
+                    const data = await response.json();
+        
+                    // Actualizar campos del formulario de paciente
+                    document.querySelector('[name="first_name"]').value = data.first_name;
+                    document.querySelector('[name="last_name"]').value = data.last_name;
+                    document.querySelector('[name="age"]').value = data.age;
+                    document.querySelector('[name="birth_date"]').value = data.birth_date;
+                    document.querySelector('[name="medical_history"]').value = data.medical_history;
+                    document.querySelector('[name="contact"]').value = data.contact;
+        
+                    // Cambiar a la pestaña "patient-card"
+                    switchTab("patient-card");
+        
+                    // Actualizar botones dinámicamente para edición
+                    updateButtonsForSelectedPatient(patientId);
+                } else {
+                    // Sin paciente seleccionado: limpiar formulario y mostrar botón "Registrar Paciente"
+                    clearPatientForm();
+                    updateButtonsForSelectedPatient(null);
                 }
-        
-                const data = await response.json();
-        
-                // Actualizar campos del formulario de paciente
-                document.querySelector('[name="first_name"]').value = data.first_name;
-                document.querySelector('[name="last_name"]').value = data.last_name;
-                document.querySelector('[name="age"]').value = data.age;
-                document.querySelector('[name="birth_date"]').value = data.birth_date;
-                document.querySelector('[name="medical_history"]').value = data.medical_history;
-                document.querySelector('[name="contact"]').value = data.contact;
-        
-                // Set selected patient on the backend
-                await setSelectedPatient(patientId);
-        
-                // Cambiar a la pestaña "patient-card"
-                switchTab("patient-card");
-        
-                // Actualizar botones dinámicamente para edición
-                document.querySelector('input[name="patient_id"]').value = patientId;
-                document.querySelectorAll('.btn-secondary, .btn-danger').forEach(btn => {
-                    btn.style.display = "inline-block";
-                });
             } catch (error) {
                 console.error("Error al cargar los datos del paciente:", error);
             }
         }
+        
+
+        function updateButtonsForSelectedPatient(patientId) {
+            const buttonsContainer = document.querySelector("#buttons-container"); // Contenedor donde están los botones
+        
+            // Limpiar el contenedor para evitar duplicados
+            buttonsContainer.innerHTML = "";
+        
+            if (patientId) {
+                // Si hay un paciente seleccionado, mostrar los botones de actualización y eliminación
+                buttonsContainer.innerHTML = `
+                    <input type="hidden" name="patient_id" value="${patientId}">
+                    <button type="submit" name="update_patient" class="btn btn-secondary mt-2">Actualizar</button>
+                    <button type="submit" name="delete_patient" class="btn btn-danger mt-2">Eliminar</button>
+                    <button type="button" name="clean_patient" class="btn btn-danger mt-2">Volver</button>
+                `;
+            } else {
+                // Si no hay un paciente seleccionado, mostrar el botón de registro
+                buttonsContainer.innerHTML = `
+                    <button type="submit" name="register_patient" class="btn btn-primary">Registrar Paciente</button>
+                `;
+            }
+        }        
+        
         
         async function setSelectedPatient(patientId) {
             try {
@@ -244,6 +268,50 @@
                 console.error("Error al establecer el paciente seleccionado:", error);
             }
         }
+
+        function clearPatientForm() {
+            document.querySelector('[name="first_name"]').value = "";
+            document.querySelector('[name="last_name"]').value = "";
+            document.querySelector('[name="age"]').value = "";
+            document.querySelector('[name="birth_date"]').value = "";
+            document.querySelector('[name="medical_history"]').value = "";
+            document.querySelector('[name="contact"]').value = "";
+        }
+        
+        document.querySelector("#buttons-container").addEventListener("click", (event) => {
+            if (event.target.name === "clean_patient") {
+                // Pulsar el botón "Volver"
+                loadPatientData(null); // Carga el estado inicial (sin paciente seleccionado)
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadPatientData(null); // Estado inicial sin paciente seleccionado
+        });
+        
+        document.getElementById("id_image").addEventListener("change", function (event) {
+            const file = event.target.files[0]; // Obtiene el archivo seleccionado
+            const previewDiv = document.querySelector(".content-preview"); // Referencia al div contenedor
+            const previewImg = document.getElementById("image-preview"); // Referencia al <img>
+        
+            if (file) {
+                const reader = new FileReader();
+        
+                // Cuando el archivo se carga exitosamente
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result; // Asignar la URL de la imagen al <img>
+                    previewDiv.style.display = "block"; // Mostrar el div contenedor
+                };
+        
+                reader.readAsDataURL(file); // Leer el archivo como una URL base64
+            } else {
+                // Si no se selecciona ningún archivo, ocultar el div contenedor
+                previewImg.src = "";
+                previewDiv.style.display = "none";
+            }
+        });
+        
+        
         
     </script>
 </body>

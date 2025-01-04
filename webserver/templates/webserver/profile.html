@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Profile
+Perfil de usuario
 {% endblock %}
 
 {% block content %}
@@ -10,9 +10,13 @@ Profile
     <div class="everything">
         <form method="post" class="register" id="registerForm">
             <div class="content">
-                <h2>Profile</h2>
+                <h2>Perfil de usuario</h2>
+                <p class="description">Actualizar los datos del perfil de usuario</p>
             </div>
                 {% csrf_token %}
+                {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+                {% endif %}
                 {% for field in form %}
                     {% if field.name == 'username' %}
                     <p>
@@ -33,9 +37,9 @@ Profile
                     {% endif %}
                     {% endif %}
                 {% endfor %}
-            <button type="submit" class="btn btn-primary">Save changes</button>
-            <button type="delete" class="btn btn-primary" onclick=disableValidation()>Delete user</button>
-            <button type="discard" class="btn btn-primary" onclick=disableValidation()>Discard changes</button>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <button type="delete" class="btn btn-primary" onclick=disableValidation()>Eliminar usuario</button>
+            <button type="discard" class="btn btn-primary" onclick=disableValidation()>Descartar cambios</button>
         </form>
     </div>
 </div>
