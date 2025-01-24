@@ -950,3 +950,11 @@ ul.errorlist.nonfield {
   height: auto; /* Mantiene la proporción de la imagen */
   margin-top: 10px;
 }
+
+.historial-image-content {
+   display: flex;
+}
+
+.historial-image-content > img {
+  min-width: 150px; width: 400px;
+}

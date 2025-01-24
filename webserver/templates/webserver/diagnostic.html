@@ -73,23 +73,22 @@
               <button type="submit" name="upload_image" class="btn btn-primary">Diagnosticar</button>
             </p>
           </form>
-          <div class="content-preview" style="display: none;">
-            <br>
-            <h3>Vista previa</h3>
-            <div class="image-container">
-                <img id="image-preview" src="" alt="Vista previa de la imagen">
-            </div>
+          <div class="content-preview" style="display: block;">
             {% if prediction_result %}
-              <div class="content-result">
                 <h3>Resultado del Diagnóstico:</h3>
+                  <br>
+                  <p>{{ prediction_result.diagnosis_text | default:"" }}</p>
+                  <br>
+                  <div class="image-container">
+                    <img id="image-preview" src="{{ prediction_result.image_url }}" alt="Vista de la imagen procesada">
+                  </div>
+                {% else %}
                 <br>
-                <p>{{ prediction_result.diagnosis_text | default:"" }}</p>
-                <br>
+                <h3>Vista previa</h3>
                 <div class="image-container">
-                  <img id="image-preview" src="{{ prediction_result.image_url }}" alt="Vista de la imagen procesada">
+                    <img id="image-preview" src="" alt="Vista previa de la imagen">
                 </div>
-              </div>
-            {% endif %}
+                {% endif %}
           </div>
         </div>
       </div>
@@ -117,16 +116,18 @@
                 <strong>Paciente:</strong>
                 <a href="#" onclick="loadPatientData('{{ diagnostic.patient.id }}')" class="patient_link">
                   {{ diagnostic.patient.first_name }} {{ diagnostic.patient.last_name }}
-                </a><br />
+                </a>
                 <strong>Fecha:</strong> {{ diagnostic.consultation_date|date:"d-m-Y H:i" }}<br />
                 <strong>Diagnóstico:</strong> {{ diagnostic.diagnosis_result|default:"Sin diagnóstico" }}<br />
-                <a href="{{ diagnostic.image.url }}" target="_blank">
-                  <img src="{{ diagnostic.image.url }}" alt="Imagen Original" style="max-width: 150px" />
-                </a>  
-                {% if diagnostic.gradcam_image %}
-                <a href="{{ diagnostic.gradcam_image.url }}" target="_blank">
-                  <img src="{{ diagnostic.gradcam_image.url }}" alt="Grad-CAM" style="max-width: 150px" />
-                </a>
+                <div class="historial-image-content">
+                  <a href="{{ diagnostic.image.url }}" target="_blank">
+                    <img src="{{ diagnostic.image.url }}" alt="Imagen Original"/>
+                  </a>  
+                  {% if diagnostic.gradcam_image %}
+                  <a href="{{ diagnostic.gradcam_image.url }}" target="_blank">
+                    <img src="{{ diagnostic.gradcam_image.url }}" alt="Grad-CAM"/>
+                  </a>
+                </div><br />
                 {% endif %}
               </li>
             {% empty %}
