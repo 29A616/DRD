@@ -56,42 +56,45 @@
       </div>
 
       <!-- Tarjeta de diagnóstico -->
-      <div class="card d-none" id="diagnostic-card">
-        <div class="card-body">
-          <h2 class="card-title">Subir Imagen</h2>
-          <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for field in image_form %}
-            <p>
-                {{ field }}
-            </p>
-            {% if field.help_text %}
-                <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
-            {% endif %}
-            {% endfor %}
-            <p>
-              <button type="submit" name="upload_image" class="btn btn-primary">Diagnosticar</button>
-            </p>
-          </form>
-          <div class="content-preview" style="display: block;">
-            {% if prediction_result %}
-                <h3>Resultado del Diagnóstico:</h3>
-                  <br>
-                  <p>{{ prediction_result.diagnosis_text | default:"" }}</p>
-                  <br>
-                  <div class="image-container">
-                    <img id="image-preview" src="{{ prediction_result.image_url }}" alt="Vista de la imagen procesada">
-                  </div>
-                {% else %}
-                <br>
-                <h3>Vista previa</h3>
-                <div class="image-container">
-                    <img id="image-preview" src="" alt="Vista previa de la imagen">
-                </div>
-                {% endif %}
-          </div>
-        </div>
+<div class="card d-none" id="diagnostic-card">
+  <div class="card-body">
+    <h2 class="card-title">Subir Imagen</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in image_form %}
+      <p>
+        {{ field }}
+      </p>
+      {% if field.help_text %}
+      <span class="helptext" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</span>
+      {% endif %}
+      {% endfor %}
+      <p>
+        <button type="submit" name="upload_image" class="btn btn-primary">Diagnosticar</button>
+      </p>
+    </form>
+
+    <!-- Contenedor de previsualización -->
+    <div class="content-preview" style="display: none;">
+      <h3>Vista previa</h3>
+      <div class="image-container">
+        <img id="image-preview" src="" alt="Vista previa de la imagen">
       </div>
+    </div>
+
+    <!-- Contenedor de resultado del diagnóstico -->
+    <div class="content-postview" style="display: {% if prediction_result %}block{% else %}none{% endif %};">
+      {% if prediction_result %}
+      <h3>Resultado del Diagnóstico:</h3>
+      <p>{{ prediction_result.diagnosis_text | default:"" }}</p>
+      <div class="image-container">
+        <img src="{{ prediction_result.image_url }}" alt="Vista de la imagen procesada">
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
 
       <!-- Tarjeta de historial -->
       <div class="card d-none" id="history-card">

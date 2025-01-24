@@ -956,5 +956,9 @@ ul.errorlist.nonfield {
 }
 
 .historial-image-content > img {
-  min-width: 150px; width: 400px;
+  min-width: 150px;
+  width: 200px;
+  max-width: 250 px;
+  border-radius: 2%;
+  box-shadow: #222;
 }

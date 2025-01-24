@@ -291,8 +291,9 @@
         
         document.getElementById("id_image").addEventListener("change", function (event) {
             const file = event.target.files[0]; // Obtiene el archivo seleccionado
-            const previewDiv = document.querySelector(".content-preview"); // Referencia al div contenedor
-            const previewImg = document.getElementById("image-preview"); // Referencia al <img>
+            const previewDiv = document.querySelector(".content-preview"); // Referencia al div de previsualización
+            const postviewDiv = document.querySelector(".content-postview"); // Referencia al div de postview
+            const previewImg = document.getElementById("image-preview"); // Referencia al <img> de previsualización
         
             if (file) {
                 const reader = new FileReader();
@@ -300,17 +301,28 @@
                 // Cuando el archivo se carga exitosamente
                 reader.onload = function (e) {
                     previewImg.src = e.target.result; // Asignar la URL de la imagen al <img>
-                    previewDiv.style.display = "block"; // Mostrar el div contenedor
+                    previewDiv.style.display = "block"; // Mostrar el div contenedor de previsualización
+                    postviewDiv.style.display = "none"; // Ocultar el div de postview
                 };
         
                 reader.readAsDataURL(file); // Leer el archivo como una URL base64
             } else {
-                // Si no se selecciona ningún archivo, ocultar el div contenedor
+                // Si no se selecciona ningún archivo, ocultar ambos contenedores
                 previewImg.src = "";
                 previewDiv.style.display = "none";
+                postviewDiv.style.display = "none";
             }
         });
         
+        // Agregar evento para ocultar la previsualización al enviar el formulario
+        document.querySelector("form").addEventListener("submit", function () {
+            const previewDiv = document.querySelector(".content-preview");
+            const previewImg = document.getElementById("image-preview");
+        
+            // Limpiar la previsualización y ocultar el div
+            previewImg.src = "";
+            previewDiv.style.display = "none";
+        });        
         
         
     </script>
