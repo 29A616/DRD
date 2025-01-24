@@ -189,7 +189,10 @@ def diagnostic(request):
                 except Exception as e:
                     messages.error(request, f"Error al generar Grad-CAM: {e}")
 
-                prediction_result = diagnosis_text
+                prediction_result = {
+                    'diagnosis_text': diagnosis_text,
+                    'image_url': diagnostic_image.image.url
+                }
 
     elif request.method == 'GET' and 'patient_id' in request.GET:
         patient_id = request.GET.get('patient_id')

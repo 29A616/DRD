@@ -80,13 +80,16 @@
                 <img id="image-preview" src="" alt="Vista previa de la imagen">
             </div>
           </div>
-          <div class="content-result">
-            <h3>Resultados del Diagnóstico</h3>
+          {% if prediction_result %}
+            <div class="content-result">
+            <h3>Resultado del Diagnóstico:</h3>
             <br>
-            <p>
-            <strong>{{ prediction_result | default:""}}</strong><br />
-            </p>
-          </div>
+            <p>{{ prediction_result.diagnosis_text | default:"" }}</p>
+            <br>
+            <div class="image-container">
+              <img id="image-preview" src="{{ prediction_result.image_url }}" alt="Vista de la imagen procesada">
+            </div>
+          {% endif %}
         </div>
       </div>
 
