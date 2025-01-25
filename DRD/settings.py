@@ -31,14 +31,19 @@ ALLOWED_HOSTS = [
     '*.railway.app',
     'localhost',
     '127.0.0.1',
-    '0.0.0.0'
+    '0.0.0.0',
+    '*'
 ]
 
 CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localhost'),
-                        "http://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localhost')]
+                        "http://" +
+                        os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localhost'),
+                        "https://" +
+                        os.getenv('NEW_PUBLIC_DOMAIN', 'localhost'),
+                        "http://" + os.getenv('NEW_PUBLIC_DOMAIN', 'localhost')]
 
 CSRF_COOKIE_DOMAIN = os.getenv(
-    'RAILWAY_PUBLIC_DOMAIN', 'http://drd-production.up.railway.app')
+    'RAILWAY_PUBLIC_DOMAIN', 'https://diagnosticoderetinopatia.up.railway.app')
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
