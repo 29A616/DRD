@@ -43,7 +43,7 @@ CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv('RAILWAY_PUBLIC_DOMAIN', 'localho
                         "http://" + os.getenv('NEW_PUBLIC_DOMAIN', 'localhost')]
 
 CSRF_COOKIE_DOMAIN = os.getenv(
-    'RAILWAY_PUBLIC_DOMAIN', 'https://diagnosticoderetinopatia.up.railway.app')
+    'NEW_PUBLIC_DOMAIN', 'https://diagnosticoderetinopatia.up.railway.app')
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
