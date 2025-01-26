@@ -955,6 +955,7 @@ ul.errorlist.nonfield {
 .historial-image-content {
    display: flex;
    flex-direction: row;
+   justify-content: space-evenly;
    flex-wrap: wrap;
 }
 
@@ -964,4 +965,10 @@ ul.errorlist.nonfield {
   max-width: 250 px;
   height: auto;
   border-radius: 10px;
+}
+
+.patient_link {
+  all: unset;
+  text-decoration: none;
+  color: var(--rose);
 }
