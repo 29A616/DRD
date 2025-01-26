@@ -15,8 +15,14 @@ Registro
                 <p class="description">Rellene los campos para continuar</p>
             </div>
                 {% csrf_token %}
-                {% if form.non_field_errors %}
-                <p class="error">{{ form.non_field_errors }}</p>
+                {% if form.errors %}
+                <ul class="errorlist nonfield">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                         {% endfor %}
+                    {% endfor %}
+                </ul>
                 {% endif %}
                 {% for field in form %}
                     {% if field.name == 'password1' or field.name == 'password2' %}
@@ -41,7 +47,7 @@ Registro
             <br>
             <p class="redirect">¿Ya tienes una cuenta? Inicia sesión <a href="/login/">aquí</a></p>
             <br>
-            <p class="warning">Al registrarte aceptas que la información ingresada en la aplicación podrá ser usadas con fines investigativos Universidad de Guayaquill. Podrás solicitar la eliminación de los datos en cualquier momento a través del perfil de usuario.</p>
+            <p class="warning">Al registrarte aceptas que la información ingresada en la aplicación podrá ser usadas con fines investigativos Universidad de Guayaquil. Podrás solicitar la eliminación de los datos en cualquier momento a través del perfil de usuario.</p>
         </form>
     </div>
 </div>

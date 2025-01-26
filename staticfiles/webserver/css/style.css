@@ -200,15 +200,15 @@ main{
   transition: 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
   align-items: center;
 }
-  main.active{
-    width: calc(100% - 300px);
-    left: 300px;
+main.active{
+  width: calc(100% - 300px);
+  left: 300px;
 }
 
 main .inf{
   padding: 30px;
   background: var(--white);
-  width: 90%;
+  width: 95%;
   border-radius: 20px;
   background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
   box-shadow:  14px 14px 28px #b6b1a4,
@@ -312,14 +312,14 @@ main .inf div{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 80%;
+    width: 100%;
   }
 
   .everything nav ul{
-    width: 70%;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
     list-style-type: none;
   }
 
@@ -927,8 +927,8 @@ ul.errorlist.nonfield {
     }
 
     main .inf{
-      padding: 20px;
-      width: 95%;
+      padding: 10px;
+      width: 99%;
     }
  }
  
@@ -949,16 +949,19 @@ ul.errorlist.nonfield {
   max-width: 500px; /* Limita el ancho de la imagen */
   height: auto; /* Mantiene la proporción de la imagen */
   margin-top: 10px;
+  border-radius: 10px;
 }
 
 .historial-image-content {
    display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
 }
 
-.historial-image-content > img {
+.historial-image-content > a > img {
   min-width: 150px;
   width: 200px;
   max-width: 250 px;
-  border-radius: 2%;
-  box-shadow: #222;
+  height: auto;
+  border-radius: 10px;
 }
