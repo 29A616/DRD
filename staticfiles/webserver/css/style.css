@@ -945,6 +945,12 @@ ul.errorlist.nonfield {
   width: 100%; /* Asegura que el contenedor de la imagen ocupe todo el ancho disponible */
 }
 
+#diagnostic-card > div > div.content-postview > div > img {
+  min-width: 150px;
+  width: 400px;
+  max-width: 500px;
+}
+
 #image-preview {
   max-width: 500px; /* Limita el ancho de la imagen */
   height: auto; /* Mantiene la proporción de la imagen */
