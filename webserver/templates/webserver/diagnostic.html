@@ -87,6 +87,7 @@
       {% if prediction_result %}
       <h3>Resultado del Diagnóstico:</h3>
       <p>{{ prediction_result.diagnosis_text | default:"" }}</p>
+      <br>
       <div class="image-container">
         <img src="{{ prediction_result.image_url }}" alt="Vista de la imagen procesada">
       </div>

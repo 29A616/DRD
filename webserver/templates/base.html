@@ -9,6 +9,17 @@
     <script src="https://kit.fontawesome.com/cd39f42707.js" crossorigin="anonymous"></script>
 </head>
 <body class="d-flex flex-column min-vh-100">
+    <div class="loading-screen">
+        <div class="loading-screen-content">
+            <div class="dots-loading">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <p>Esperando resultado del diagnóstico, esto puede demorar unos segundos.</p>
+            <p>Por favor, no cierres esta pestaña.</p>
+        </div>
+    </div>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
@@ -314,17 +325,25 @@
             }
         });
         
-        // Agregar evento para ocultar la previsualización al enviar el formulario
+        // Agregar evento para ocultar la previsualización al enviar el formulario y cierra la pantalla de carga
         document.querySelector("form").addEventListener("submit", function () {
             const previewDiv = document.querySelector(".content-preview");
             const previewImg = document.getElementById("image-preview");
-        
+
             // Limpiar la previsualización y ocultar el div
             previewImg.src = "";
             previewDiv.style.display = "none";
-        });        
+            loading.style.display = "none";
+        });
         
-        
+        // Pantalla de carga
+        const loading = document.querySelector(".loading-screen");
+
+        // Colocar pantalla de carga al pulsar sobre Diagnosticar
+        document.querySelector("#diagnostic-card > div > form > p:nth-child(4) > button").addEventListener("click", function(){
+            loading.style.display = "block";
+        });
+
     </script>
 </body>
 </html>
