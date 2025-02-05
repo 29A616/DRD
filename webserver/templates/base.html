@@ -122,39 +122,38 @@
             main.classList.toggle("active");
         };
     
-        // Sections
+        // Obtener referencias a las secciones (cards)
         let paciente = document.getElementById("patient-card");
         let diagnostico = document.getElementById("diagnostic-card");
         let historial = document.getElementById("history-card");
-    
-        // Buttons
+
+        // Obtener referencias a los botones del nav
         let btn_paciente = document.querySelector(".btn-pacient");
         let btn_diagnostico = document.querySelector(".btn-diagnostic");
         let btn_historial = document.querySelector(".btn-historial");
-    
-        // Initial State
-        paciente.style.display = "block";
-        diagnostico.style.display = "none";
-        historial.style.display = "none";
-    
-        // Functions to switch tabs and update server state
+
+        // Objeto para manejar botones y sus tarjetas correspondientes
+        let navItems = {
+            "patient-card": { btn: btn_paciente, card: paciente },
+            "diagnostic-card": { btn: btn_diagnostico, card: diagnostico },
+            "history-card": { btn: btn_historial, card: historial }
+        };
+
+        // Función para cambiar de pestaña (botón y tarjeta)
         async function switchTab(tabName) {
-            // Update the visible section
-            if (tabName === "diagnostic-card") {
-                diagnostico.style.display = "block";
-                paciente.style.display = "none";
-                historial.style.display = "none";
-            } else if (tabName === "history-card") {
-                diagnostico.style.display = "none";
-                paciente.style.display = "none";
-                historial.style.display = "block";
-            } else {
-                diagnostico.style.display = "none";
-                paciente.style.display = "block";
-                historial.style.display = "none";
+            // Remover 'active' de todos los botones y ocultar todas las tarjetas
+            Object.values(navItems).forEach(({ btn, card }) => {
+                btn.classList.remove("active");
+                card.style.display = "none";
+            });
+
+            // Activar el botón y mostrar la tarjeta correspondiente
+            if (navItems[tabName]) {
+                navItems[tabName].btn.classList.add("active");
+                navItems[tabName].card.style.display = "block";
             }
-    
-            // Send the active tab to the server
+
+            // Enviar la pestaña activa al servidor
             try {
                 await fetch("/save-active-tab/", {
                     method: "POST",
@@ -168,41 +167,36 @@
                 console.error("Error saving active tab:", error);
             }
         }
-    
-        // Functions to handle button clicks
-        btn_diagnostico.onclick = function () {
-            switchTab("diagnostic-card");
-        };
-    
-        btn_historial.onclick = function () {
-            switchTab("history-card");
-        };
-    
-        btn_paciente.onclick = function () {
-            switchTab("patient-card");
-        };
-    
-        // Fetch the active tab from the server on page load
+
+        // Asignar eventos de clic a los botones
+        btn_diagnostico.onclick = () => switchTab("diagnostic-card");
+        btn_historial.onclick = () => switchTab("history-card");
+        btn_paciente.onclick = () => switchTab("patient-card");
+
+        // Obtener la pestaña activa del servidor al cargar la página
         async function initializeActiveTab() {
             try {
                 const response = await fetch("/save-active-tab/");
                 const data = await response.json();
                 const activeTab = data.active_tab || "patient-card";
-                console.log("active_tab: ", activeTab);
-                switchTab(activeTab);
+
+                console.log("Active Tab:", activeTab);
+                switchTab(activeTab); // Activar la pestaña guardada en la sesión
             } catch (error) {
                 console.error("Error fetching active tab:", error);
-                switchTab("patient-card"); // Default to patient-card on error
+                switchTab("patient-card"); // En caso de error, usar "patient-card" por defecto
             }
         }
-    
-        // CSRF Token Helper
+
+        // Obtener el CSRF Token de la plantilla
         function getCsrfToken() {
             return document.querySelector("[name=csrfmiddlewaretoken]").value;
         }
-    
-        // Initialize the active tab on page load
+
+        // Ejecutar la inicialización cuando el DOM esté cargado
         document.addEventListener("DOMContentLoaded", initializeActiveTab);
+
+
 
         async function loadPatientData(patientId) {
             try {

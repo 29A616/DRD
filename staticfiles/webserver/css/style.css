@@ -1034,3 +1034,34 @@ ul.errorlist.nonfield {
   0%, 80%, 100% { transform: scale(0); }
   40% { transform: scale(1); }
 }
+
+/* Diagnosic Navbar */
+.navbar.navbar-expand-lg.navbar-light.bg-light {
+  background: var(--white);
+  max-width: 900px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-around;
+  box-sizing: border-box;
+  background: linear-gradient(145deg, #f1e9d8, #cbc4b6);
+  box-shadow: 14px 14px 28px #b6b1a4,
+         -14px -14px 28px #fffff0;
+  flex-direction: row;
+}
+
+.diagnostic-nav-item {
+  flex-grow: 1;
+  text-align: center;
+  padding: 20px;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.diagnostic-nav-item.active {
+  flex-grow: 1;
+  text-align: center;
+  padding: 20px;
+  border-style: outset;
+  border-radius: 20px;
+  box-sizing: border-box;
+}

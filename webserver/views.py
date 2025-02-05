@@ -213,6 +213,7 @@ def diagnostic(request):
 
     # Obtener la pestaña activa desde la sesión
     active_tab = request.session.get('active_tab', 'patient-card')
+    print("views: ", active_tab)
 
     # print("Selected patient view:", selected_patient)
 
@@ -241,6 +242,6 @@ def save_active_tab(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     elif request.method == 'GET':
         active_tab = request.session.get('active_tab', 'patient-card')
-        # print("GET:", active_tab)
+        print("GET:", active_tab)
         return JsonResponse({'active_tab': active_tab})
     return JsonResponse({'status': 'error'}, status=400)
